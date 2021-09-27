@@ -86,18 +86,20 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
           automaticallyImplyLeading: false,
         ),
         drawer: NaviationDrawer(),
-        body: Stack(
-          children: [
+        body:
+        
+        //  Stack(
+        //   children: [
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //         image: AssetImage("assets/images/trash.jpg"),
-                //    // fit: BoxFit.fill,
-                //         repeat: ImageRepeat.noRepeat
-                //         )),
-                child: Image.asset("assets/images/trash.jpg", fit: BoxFit.cover,)
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/screen.png"),
+                   fit: BoxFit.cover,
+                       
+                        )),
+             //   child: Image.asset("assets/images/trash.jpg", fit: BoxFit.cover,)
 
                 // CarouselSlider.builder(
                 //   key: _sliderKey,
@@ -121,14 +123,14 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                 // ),
                 ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/images/new_logo.png", width: 300, height: 250,),
-                  ],
-                )
-          ],
-        ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Image.asset("assets/images/new_logo.png", width: 300, height: 250,),
+                //   ],
+                // )
+        //   ],
+        // ),
       ),
     );
   }
