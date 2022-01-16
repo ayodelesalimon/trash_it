@@ -36,8 +36,15 @@ class _CustomCellState extends State<CustomCell> {
 
             children: <Widget>[
               Container(
+                decoration: BoxDecoration(
+                //  image: DecorationImage(image: AssetImage('assets/images/naira.png'), fit: BoxFit.cover,),
+                  // border: Border.all(
+
+                  // ),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                   margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                  child: Image(image: AssetImage('assets/images/dollar.png'), fit: BoxFit.cover,)
+                 child: Image(image: AssetImage('assets/images/naira.png'), fit: BoxFit.cover,)
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
