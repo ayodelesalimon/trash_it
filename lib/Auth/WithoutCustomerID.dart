@@ -17,14 +17,16 @@ import 'package:trash_it/Widgets/Inputs.dart';
 
 import 'OTPScreen.dart';
 
-class RegisterScreenPage extends StatefulWidget {
-  const RegisterScreenPage({Key? key}) : super(key: key);
+class RegisterWithCustomerScreenPage extends StatefulWidget {
+  const RegisterWithCustomerScreenPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterScreenPageState createState() => _RegisterScreenPageState();
+  _RegisterWithCustomerScreenPageState createState() =>
+      _RegisterWithCustomerScreenPageState();
 }
 
-class _RegisterScreenPageState extends State<RegisterScreenPage> {
+class _RegisterWithCustomerScreenPageState
+    extends State<RegisterWithCustomerScreenPage> {
   final formKey = new GlobalKey<FormState>();
   String? operator;
   String? propertyType;
@@ -57,7 +59,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
       isLoading = true;
     });
     try {
-     
+      // final dio = Dio();
       final response = await http.get(Uri.parse(ApiUrl.OPERATORS_LIST));
       if (response.statusCode == 200) {
         dynamic res = jsonDecode(response.body);
@@ -182,10 +184,10 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
         "password": password,
         "phone": phone
       });
-      // print(response.reasonPhrase);
-      // print(response);
-      // print(response.body);
-      // print(response.statusCode);
+      print(response.reasonPhrase);
+      print(response);
+      print(response.body);
+      print(response.statusCode);
 
       // Navigator.of(context).pop();
       print(response.body);
@@ -208,14 +210,11 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                   child: PinCodeVerificationScreen(emailController.text));
             });
       } else if (registerResponse.status == "failed") {
-        //    Alerts.show(context, "Error", registerResponse.message!.customerId![0]);
+       Alerts.show(context, "Error", registerResponse.message!.customerId![0]);
       } else if (registerResponse.status == "success") {
         ///Navigator.of(context).pop();
         // Alerts.show(context, "Error", res["message"]);
-      } else {
-       
-
-      }
+      } else {}
       print(res);
     } catch (exception) {
       //  Navigator.of(context).pop();
@@ -308,54 +307,24 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Input(
-                                              controller: customerIdController,
-                                              obscureText: false,
-                                              hintText:
-                                                  'Enter Customer Id (As it appears on the bill)',
-                                              keyboard:
-                                                  TextInputType.emailAddress,
-                                              onTap: () {},
-                                              onChanged: () {},
-                                              onSaved: (val) {
-                                                //customerId = val;
-                                              },
-                                              validator: (String value) {
-                                                if (value.isEmpty) {
-                                                  return 'Customer Id is required';
-                                                }
-                                                return null;
-                                              },
-                                              toggleEye: () {},
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              validateWithId();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                  color: R
-                                                      .colors.loginButtonColor),
-                                              child: Icon(
-                                                Icons.done,
-                                                color: Colors.white,
-                                              ),
-                                              height: 55,
-                                              width: 55,
-                                              // color: Colors.green,
-                                            ),
-                                          )
-                                        ],
+                                      Input(
+                                        controller: customerIdController,
+                                        obscureText: false,
+                                        hintText:
+                                            'Enter Customer Id (As it appears on the bill)',
+                                        keyboard: TextInputType.emailAddress,
+                                        onTap: () {},
+                                        onChanged: () {},
+                                        onSaved: (val) {
+                                          //customerId = val;
+                                        },
+                                        validator: (String value) {
+                                          if (value.isEmpty) {
+                                            return 'Customer Id is required';
+                                          }
+                                          return null;
+                                        },
+                                        toggleEye: () {},
                                       ),
                                     ],
                                   ),
@@ -906,13 +875,12 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
         fisrtNameController.text = decoded.message!.firstName!;
         lastNameController.text = decoded.message!.lastName!;
         emailController.text = decoded.message!.email!;
-       
+        phoneController.text = decoded.message!.phone!;
         operator = decoded.message!.company!.companyName!;
         companyId = int.parse(decoded.message!.company!.companyId!);
         propertyType = decoded.message!.propertyType!;
         ward = decoded.message!.ward!.wardName!;
         lga = decoded.message!.localGovt!.lgName!;
-         phoneController.text = "07606060".toString();
       } else if (decoded.status == "failed") {
         Navigator.of(context).pop();
         Alerts.show(context, "Error", decoded.responseType);

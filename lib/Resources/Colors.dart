@@ -21,7 +21,9 @@ const Color darkLiver = Color(0xFF4F4F4F);
 
 class ColorResources {
   Color splashScreenViewPagerUnselectedIndicatorColor = Color(0xFFe0f2f1);
-  Color splashScreenViewPagerSelectedIndicatorColor = Color(0xFFACD03A);
+  Color splashScreenViewPagerSelectedIndicatorColor = Color(0xFF2788E9);
+  
+  // Color(0xFFACD03A);
   
   //Color(0xFF5EA7FF);
   Color loginButtonColor = Color(0xFF364356);

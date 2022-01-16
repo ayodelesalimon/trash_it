@@ -1,8 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Constants/LayoutController.dart';
+import 'package:trash_it/Constants/TextStyle.dart';
+import 'package:trash_it/Models/UserProfileModel.dart';
 import 'package:trash_it/Resources/Resources.dart';
+import 'package:trash_it/Utils/ApiUrl.dart';
 import 'package:trash_it/Widgets/CustomRaisedButton.dart';
+import 'package:http/http.dart' as http;
+import 'package:trash_it/Widgets/Inputs.dart';
 
 class ProfileTabPage extends StatefulWidget {
   @override
@@ -10,99 +21,247 @@ class ProfileTabPage extends StatefulWidget {
 }
 
 class _ProfileTabPageState extends State<ProfileTabPage> {
+  final formKey = new GlobalKey<FormState>();
+  TextEditingController fisrtNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  TextEditingController propertyTypeController = TextEditingController();
+  TextEditingController customerIdController = TextEditingController();
+  TextEditingController wardController = TextEditingController();
+  TextEditingController localGovtController = TextEditingController();
+  bool isLoading = true;
+  bool isError = false;
+  String? token;
+  UserProfileModel userProfileModel = UserProfileModel();
+  Future getFromLocalStorage({String? name}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString(name);
+    print(data);
+    return data;
+  }
+
+  Future getUserProfile() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await http.get(
+          Uri.parse(
+            ApiUrl.PROFILE + '${await getFromLocalStorage(name: 'email')} ',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'Bearer ${await getFromLocalStorage(name: 'token')} ',
+          });
+      // UserProfileModel profileModel = UserProfileModel.fromJson(response);
+      print(response.body);
+      if (response.statusCode == 200) {
+        dynamic resData = jsonDecode(response.body);
+
+       
+        setState(() {
+          isLoading = false;
+           customerIdController.text = resData["message"]["customer_id"];
+        fisrtNameController.text = resData["message"]["first_name"];
+        lastNameController.text = resData["message"]["last_name"];
+        emailController.text = resData["message"]["email"];
+        phoneController.text = resData["message"]["phone"];
+        });
+        print(resData);
+      } else {
+        setState(() {
+          isLoading = false;
+          isError = true;
+        });
+      }
+    } catch (e) {
+      // print(e);
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //  getToken();
+    getUserProfile().whenComplete(() => null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        SingleChildScrollView(
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Image(
-                image: AssetImage('assets/images/mask_profile.png'),
-                fit: BoxFit.cover,
-              )),
+        appBar: AppBar(
+          title: Text("Profile"),
+          automaticallyImplyLeading: false,
         ),
-        SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: LayoutController.getHeight(
-                (MediaQuery.of(context).size.height - 60),
-                minHeight: 740),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                  decoration: BoxDecoration(
-                      color: R.colors.whiteMainColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25))),
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              R.strings.personalInformation,
-                              style: TextStyle(
-                                  color: R.colors.homeTextColor,
-                                  fontFamily: R.strings.fontName,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.start,
+        body: isLoading
+            ? Center(
+                child: CupertinoActivityIndicator(
+                radius: 20,
+              ))
+            : Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: formKey,
+                    child: Column(children: [
+                      //  Text("hhhhh"),
+
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("Customer ID", style: textStyleBold),
+                            SizedBox(
+                             height: 10,
+                            ),
+                            Input(
+                              enable: false,
+                              controller: customerIdController,
+                              obscureText: false,
+                              hintText:
+                                  'Enter Customer Id (As it appears on the bill)',
+                              keyboard: TextInputType.emailAddress,
+                              onTap: () {},
+                              onChanged: () {},
+                              onSaved: (val) {
+                                //customerId = val;
+                              },
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Customer Id is required';
+                                }
+                                return null;
+                              },
+                              toggleEye: () {},
+                            ),
+                            SizedBox(
+                              width: 5,
                             ),
                           ],
                         ),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                            child: Text("Test User"),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                            child: Text("user@gmail.com"),
-                          ),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-                            child: Text("09040439234"),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 18.0, 0, 30),
-                          child: ButtonTheme(
-                            height: 50,
-                            minWidth: MediaQuery.of(context).size.width - 40,
-                            child: CustomRaisedButton(
-                              text: R.strings.logOut,
-                              color: R.colors
-                                  .splashScreenViewPagerSelectedIndicatorColor,
-                              onPressed: () {},
+                      //   ],
+                      // ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("First Name ", style: textStyleBold),
+                            SizedBox(
+                             height: 10,
                             ),
-                          ),
+                            Input(
+                              enable: false,
+                              controller: fisrtNameController,
+                              obscureText: false,
+                              hintText:
+                                  'Enter First Name (As it appears on the bill)',
+                              keyboard: TextInputType.emailAddress,
+                              onTap: () {},
+                              onChanged: () {},
+                              onSaved: () {},
+                              validator: () {},
+                              toggleEye: () {},
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Last Name ", style: textStyleBold),
+                            SizedBox(
+                             height: 10,
+                            ),
+                            Input(
+                              enable: false,
+                              controller: lastNameController,
+                              obscureText: false,
+                              hintText:
+                                  'Enter Last Name (As it appears on the bill)',
+                              keyboard: TextInputType.emailAddress,
+                              onTap: () {},
+                              onChanged: () {},
+                              onSaved: () {},
+                              validator: () {},
+                              toggleEye: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Email", style: textStyleBold),
+                            SizedBox(
+                             height: 10,
+                            ),
+                            Input(
+                              enable: false,
+                              controller: emailController,
+                              obscureText: false,
+                              hintText: 'Enter Email',
+                              keyboard: TextInputType.emailAddress,
+                              onTap: () {},
+                              onChanged: () {},
+                              onSaved: () {},
+                              validator: () {},
+                              toggleEye: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Mobile Number", style: textStyleBold),
+                            SizedBox(
+                             height: 10,
+                            ),
+                            Input(
+                              enable: false,
+                              controller: phoneController,
+                              obscureText: false,
+                              hintText: 'Enter Mobile Number',
+                              keyboard: TextInputType.emailAddress,
+                              onTap: () {},
+                              onChanged: () {},
+                              onSaved: () {},
+                              validator: () {},
+                              toggleEye: () {},
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Center(child: Text("Log out", style: TextStyle(color: Colors.red),)),
+                            )
+                          ],
+                        ),
+                      )
+                    ]),
                   ),
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    ));
+                ),
+              ));
   }
 }

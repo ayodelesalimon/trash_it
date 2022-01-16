@@ -33,7 +33,14 @@ dependencies:
   flutter_bloc: 
   image_fade:
   carousel_slider:
-
+  pin_code_fields: ^7.3.0
+  http:
+  email_validator:
+  modal_bottom_sheet:
+  connectivity: ^3.0.6
+  shared_preferences:
+  flutter_session:
+  dio:
 dev_dependencies:
   flutter_test:
     sdk: flutter
