@@ -5,14 +5,14 @@ import 'Login.dart';
 import 'Register.dart';
 import 'WithoutCustomerID.dart';
 
-class GetStared extends StatefulWidget {
-  const GetStared({ Key? key }) : super(key: key);
+class GetStartedScreen extends StatefulWidget {
+  const GetStartedScreen({Key? key}) : super(key: key);
 
   @override
-  _GetStaredState createState() => _GetStaredState();
+  _GetStartedScreenState createState() => _GetStartedScreenState();
 }
 
-class _GetStaredState extends State<GetStared> {
+class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,7 @@ class _GetStaredState extends State<GetStared> {
                       child: Container(
                         height: 150,
                         child: Image(
-                          image: AssetImage('assets/images/new_logo.png'),
+                          image: AssetImage('assets/images/trashbg.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -61,109 +61,113 @@ class _GetStaredState extends State<GetStared> {
                           fontWeight: FontWeight.w300),
                     ),
                   ),
-                     SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterScreenPage()),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        right: 25,
+                        left: 25,
+                        bottom: 10,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          color: R.colors
+                              .splashScreenViewPagerSelectedIndicatorColor,
+                          borderRadius: BorderRadius.circular(8)),
+                      height: 50,
+                      width: double.infinity,
+                      child: Center(
+                        child: Text(
+                          'Register With Customer ID',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RegisterWithCustomerScreenPage()),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 10,
+                        left: 25,
+                        right: 25,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: R.colors
+                                  .splashScreenViewPagerSelectedIndicatorColor),
+                          color: R.colors.whiteMainColor,
+                          borderRadius: BorderRadius.circular(8)),
+                      height: 50,
+                      width: double.infinity,
+                      child: Center(
+                        child: Text(
+                          'Register Without Customer ID',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: R.colors
+                                  .splashScreenViewPagerSelectedIndicatorColor),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          R.strings.alreadyHaveAnAccount,
+                          style: TextStyle(
+                              color: R.colors.textBackgroundColor,
+                              fontFamily: R.strings.fontName,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w300),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                    
-                                    RegisterScreenPage()
-                                    
-                                    ),
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                right: 25,left: 25,
-                                bottom: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  color: R.colors
-                                      .splashScreenViewPagerSelectedIndicatorColor,
-                                  borderRadius: BorderRadius.circular(8)),
-                              height: 50,
-                              width: double.infinity,
-                              child: Center(
-                                child: Text(
-                                  'Register With Customer ID',
-                                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
-                                ),
-                              ),
-                            ),
+                                    builder: (_) => LoginScreenPage()));
+                          },
+                          child: Text(
+                            R.strings.logIn,
+                            style: TextStyle(
+                                color: R.colors
+                                    .splashScreenViewPagerSelectedIndicatorColor,
+                                fontFamily: R.strings.fontName,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterWithCustomerScreenPage()),
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                bottom: 10, left: 25, right: 25,
-                              ),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: R.colors.splashScreenViewPagerSelectedIndicatorColor),
-                                  color: R.colors
-                                      .whiteMainColor,
-                                  borderRadius: BorderRadius.circular(8)),
-                              height: 50,
-                              width: double.infinity,
-                              child: Center(
-                                child: Text(
-                                  'Register Without Customer ID',
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: R.colors.splashScreenViewPagerSelectedIndicatorColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                           SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        R.strings.alreadyHaveAnAccount,
-                                        style: TextStyle(
-                                            color: R.colors.textBackgroundColor,
-                                            fontFamily: R.strings.fontName,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      LoginScreenPage()));
-                                        },
-                                        child: Text(
-                                          R.strings.logIn,
-                                          style: TextStyle(
-                                              color:
-                                                  R.colors.splashScreenViewPagerSelectedIndicatorColor,
-                                              fontFamily: R.strings.fontName,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                 ]),
+                        )
+                      ],
+                    ),
+                  )
+                ]),
           ],
         ),
       ),

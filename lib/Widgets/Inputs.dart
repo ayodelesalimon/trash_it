@@ -252,14 +252,14 @@ class Input extends StatelessWidget {
        // fillColor: Colors.white,
         filled: true,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
             color: Colors.grey,
             width: 1.0,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
             color: R.colors.splashScreenViewPagerSelectedIndicatorColor,
             width: 1.0,

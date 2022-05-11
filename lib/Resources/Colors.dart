@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const Color primaryColor = Color(0xFF2788E9);
+const Color primaryColor = Color(0xFF008080);
 const Color lightPrimaryColor = Color(0XFF0CA2D9);
 const Color deepPrimaryColor = Color(0xFF2788E9);
 const Color lightGrey = Color(0xFF5F6368);
@@ -21,7 +21,7 @@ const Color darkLiver = Color(0xFF4F4F4F);
 
 class ColorResources {
   Color splashScreenViewPagerUnselectedIndicatorColor = Color(0xFFe0f2f1);
-  Color splashScreenViewPagerSelectedIndicatorColor = Color(0xFF2788E9);
+  Color splashScreenViewPagerSelectedIndicatorColor = Color(0xFF008080);
   
   // Color(0xFFACD03A);
   

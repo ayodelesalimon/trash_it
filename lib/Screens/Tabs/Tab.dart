@@ -67,6 +67,7 @@ import 'package:trash_it/Screens/Tabs/CardsTabPage.dart';
 import 'package:trash_it/Screens/Tabs/HomeTab.dart';
 
 import 'HistoryTabPage.dart';
+import 'PaymentHistory.dart';
 import 'PaymentTab.dart';
 import 'ProfileTabPage.dart';
 
@@ -83,14 +84,14 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const HomeTabScreen(),
     PaymentScreen(),
-    CardsTabPage(),
+    PaymentHistoryScreen(),
     ProfileTabPage(),
   ];
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffC4DFCB),
+      backgroundColor: Colors.teal[300],
      
       body: pages[pageIndex],
       bottomNavigationBar: buildMyNavBar(context),
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 60,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Colors.teal[300],
         borderRadius: const BorderRadius.only(
         //  topLeft: Radius.circular(20),
           //topRight: Radius.circular(20),
@@ -118,16 +119,8 @@ class _HomePageState extends State<HomePage> {
               });
             },
             icon: pageIndex == 0
-                ? const Icon(
-                    Icons.home_filled,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.home_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
+                ? Image.asset("assets/tab/home_white.png")
+                : Image.asset("assets/tab/home_white.png"),
           ),
           IconButton(
             enableFeedback: false,
@@ -137,16 +130,8 @@ class _HomePageState extends State<HomePage> {
               });
             },
             icon: pageIndex == 1
-                ? const Icon(
-                    Icons.work_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.work_outline_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
+                  ? Image.asset("assets/tab/payment_white.PNG")
+                : Image.asset("assets/tab/payment_white.PNG"),
           ),
           IconButton(
             enableFeedback: false,
@@ -156,16 +141,8 @@ class _HomePageState extends State<HomePage> {
               });
             },
             icon: pageIndex == 2
-                ? const Icon(
-                    Icons.widgets_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.widgets_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
+               ?Image.asset("assets/tab/bills_white.png")
+                : Image.asset("assets/tab/bills_white.png"),
           ),
           IconButton(
             enableFeedback: false,
@@ -175,16 +152,8 @@ class _HomePageState extends State<HomePage> {
               });
             },
             icon: pageIndex == 3
-                ? const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                    size: 35,
-                  ),
+                ? Image.asset("assets/tab/user_white.PNG")
+                : Image.asset("assets/tab/user_white.PNG"),
           ),
         ],
       ),

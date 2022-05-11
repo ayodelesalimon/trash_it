@@ -210,7 +210,7 @@ class _RegisterWithCustomerScreenPageState
                   child: PinCodeVerificationScreen(emailController.text));
             });
       } else if (registerResponse.status == "failed") {
-       Alerts.show(context, "Error", registerResponse.message!.customerId![0]);
+        Alerts.show(context, "Error", registerResponse.message!.customerId![0]);
       } else if (registerResponse.status == "success") {
         ///Navigator.of(context).pop();
         // Alerts.show(context, "Error", res["message"]);
@@ -245,7 +245,7 @@ class _RegisterWithCustomerScreenPageState
                   child: Container(
                     height: 150,
                     child: Image(
-                      image: AssetImage('assets/images/new_logo.png'),
+                      image: AssetImage('assets/images/trashbg.png'),
                       fit: BoxFit.fill,
                     ),
                   ),

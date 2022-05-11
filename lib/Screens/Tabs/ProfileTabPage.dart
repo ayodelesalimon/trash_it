@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trash_it/Auth/Login.dart';
 import 'package:trash_it/Constants/LayoutController.dart';
 import 'package:trash_it/Constants/TextStyle.dart';
 import 'package:trash_it/Models/UserProfileModel.dart';
@@ -41,12 +42,58 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
     print(data);
     return data;
   }
+ Future setToLocalStorage({String? name, dynamic data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(name, data);
+  }
+  Future logOut() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          ApiUrl.SIGN_OUT,
+          
+        ),
+         headers: {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'Bearer ${await getFromLocalStorage(name: 'token')} ',
+          });
+      
+      // UserProfileModel profileModel = UserProfileModel.fromJson(response);
+      print(response.body);
+      if (response.statusCode == 200) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => LoginScreenPage(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+        // dynamic resData = jsonDecode(response.body);
+        // setState(() {
+        //   fb = resData["message"]["facebook"];
+        //   insta = resData["message"]["instagram"];
+        // });
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => LoginScreenPage(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      }
+    } catch (e) {
+      // print(e);
+
+    }
+  }
 
   Future getUserProfile() async {
     setState(() {
       isLoading = true;
     });
-
+    print(await getFromLocalStorage(name: 'email'));
     try {
       final response = await http.get(
           Uri.parse(
@@ -62,14 +109,15 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
       if (response.statusCode == 200) {
         dynamic resData = jsonDecode(response.body);
 
-       
         setState(() {
+          setToLocalStorage(
+              name: 'firstName', data: resData["message"]["first_name"]);
           isLoading = false;
-           customerIdController.text = resData["message"]["customer_id"];
-        fisrtNameController.text = resData["message"]["first_name"];
-        lastNameController.text = resData["message"]["last_name"];
-        emailController.text = resData["message"]["email"];
-        phoneController.text = resData["message"]["phone"];
+          customerIdController.text = resData["message"]["customer_id"];
+          fisrtNameController.text = resData["message"]["first_name"];
+          lastNameController.text = resData["message"]["last_name"];
+          emailController.text = resData["message"]["email"];
+          phoneController.text = resData["message"]["phone"];
         });
         print(resData);
       } else {
@@ -92,7 +140,9 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
     // TODO: implement initState
     super.initState();
     //  getToken();
+
     getUserProfile().whenComplete(() => null);
+   // logOut().whenComplete(() => null);
   }
 
   @override
@@ -125,7 +175,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                             ),
                             Text("Customer ID", style: textStyleBold),
                             SizedBox(
-                             height: 10,
+                              height: 10,
                             ),
                             Input(
                               enable: false,
@@ -163,7 +213,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                           children: [
                             Text("First Name ", style: textStyleBold),
                             SizedBox(
-                             height: 10,
+                              height: 10,
                             ),
                             Input(
                               enable: false,
@@ -188,7 +238,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                           children: [
                             Text("Last Name ", style: textStyleBold),
                             SizedBox(
-                             height: 10,
+                              height: 10,
                             ),
                             Input(
                               enable: false,
@@ -213,7 +263,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                           children: [
                             Text("Email", style: textStyleBold),
                             SizedBox(
-                             height: 10,
+                              height: 10,
                             ),
                             Input(
                               enable: false,
@@ -237,7 +287,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                           children: [
                             Text("Mobile Number", style: textStyleBold),
                             SizedBox(
-                             height: 10,
+                              height: 10,
                             ),
                             Input(
                               enable: false,
@@ -251,10 +301,18 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                               validator: () {},
                               toggleEye: () {},
                             ),
-
                             Padding(
                               padding: const EdgeInsets.all(18.0),
-                              child: Center(child: Text("Log out", style: TextStyle(color: Colors.red),)),
+                              child: GestureDetector(
+                                onTap: () async {
+                                 await logOut();
+                                },
+                                child: Center(
+                                    child: Text(
+                                  "Log out",
+                                  style: TextStyle(color: Colors.red),
+                                )),
+                              ),
                             )
                           ],
                         ),
