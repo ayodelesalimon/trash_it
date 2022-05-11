@@ -17,8 +17,10 @@ class HomeTabScreen extends StatefulWidget {
 class _HomeTabScreenState extends State<HomeTabScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List carouselimages = [
-    "assets/images/download.jpeg",
-    "assets/images/logo.png"
+    "assets/images/1.jpeg",
+    "assets/images/2.jpeg",
+    "assets/images/3.jpeg",
+    "assets/images/screen.png"
   ];
   GlobalKey<CarouselSliderState> _sliderKey = GlobalKey();
   Future<bool> _onWillPop() async {
@@ -33,7 +35,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
               ),
               content: new Text(
                 'Do you want to exit the App?',
-                style: TextStyle(color: Color(0xFF2788E9)),
+                style: TextStyle(color: Color(0xFF008080)),
               ),
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
@@ -43,7 +45,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                 FlatButton(
                   child: new Text(
                     'Yes',
-                    style: TextStyle(color: Color(0xFF2788E9)),
+                    style: TextStyle(color: Color(0xFF008080)),
                   ),
                   onPressed: () {
                     SystemNavigator.pop();
@@ -70,67 +72,115 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        endDrawerEnableOpenDragGesture: false,
-        key: _scaffoldKey,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState!.openDrawer();
-            },
-            // alignment: Alignment.topCenter,
-            icon: Icon(Icons.menu),
-          ),
-          backgroundColor: R.colors.splashScreenViewPagerSelectedIndicatorColor,
-          title: Text("HOME"),
-          automaticallyImplyLeading: false,
-        ),
-        drawer: NaviationDrawer(),
-        body:
-        
-        //  Stack(
-        //   children: [
-            Container(
+      child: SafeArea(
+        child: Scaffold(
+            endDrawerEnableOpenDragGesture: false,
+            key: _scaffoldKey,
+            //appBar: AppBar(
+            // leading: IconButton(
+            //   onPressed: () {
+            //     _scaffoldKey.currentState!.openDrawer();
+            //   },
+            //   // alignment: Alignment.topCenter,
+            //   icon: Icon(Icons.menu),
+            // ),
+            // backgroundColor: R.colors.splashScreenViewPagerSelectedIndicatorColor,
+            // title: Text("HOME"),
+            // automaticallyImplyLeading: false,
+            //  ),
+            drawer: NaviationDrawer(),
+            body:
+
+                //  Stack(
+                //   children: [
+                Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/screen.png"),
-                   fit: BoxFit.cover,
-                       
-                        )),
-             //   child: Image.asset("assets/images/trash.jpg", fit: BoxFit.cover,)
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage("assets/images/homebg.PNG"),
+                fit: BoxFit.cover,
+              )),
 
-                // CarouselSlider.builder(
-                //   key: _sliderKey,
-                //   itemCount: carouselimages.length,
-                //   options: CarouselOptions(
-                //     autoPlay: true,
-                //     enlargeCenterPage: true,
-                //     viewportFraction: 0.9,
-                //     aspectRatio: 1.0,
-                //     initialPage: 0,
-                //   ),
-                //   itemBuilder: (BuildContext context, int index, int realIndex) {
-                //     return Container(
-                //       alignment: Alignment.center,
-                //       //color: colors[index],
-                //       child: Image.asset(
-                //         carouselimages[index], fit: BoxFit.contain,
-                //       ),
-                //     );
-                //   },
-                // ),
-                ),
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 18.0),
+                        child: IconButton(
+                          onPressed: () {
+                            _scaffoldKey.currentState!.openDrawer();
+                          },
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 18.0, left: 20),
+                        child: IconButton(
+                          onPressed: () {
+                            _scaffoldKey.currentState!.openDrawer();
+                          },
+                          icon: Icon(
+                            Icons.notifications,
+                            color: Colors.red,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+              //   child: Image.asset("assets/images/trash.jpg", fit: BoxFit.cover,)
 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Image.asset("assets/images/new_logo.png", width: 300, height: 250,),
-                //   ],
-                // )
-        //   ],
-        // ),
+              // CarouselSlider.builder(
+              //   key: _sliderKey,
+              //   itemCount: carouselimages.length,
+              //   options: CarouselOptions(
+              //     height: MediaQuery.of(context).size.height,
+              //     autoPlay: true,
+              //     enlargeCenterPage: true,
+              //     viewportFraction: 0.9,
+              //     aspectRatio: 1.0,
+              //     initialPage: 0,
+              //   ),
+              //   itemBuilder: (BuildContext context, int index, int realIndex) {
+              //     return Container(
+              //       height: MediaQuery.of(context).size.height,
+              //       alignment: Alignment.center,
+              //       decoration: BoxDecoration(
+              //         image: DecorationImage(
+
+              //           image: AssetImage(carouselimages[index]),
+              //           fit: BoxFit.fitWidth,
+              //         ),
+              //       ),
+              //       //color: colors[index],
+              //       // child: Image.asset(
+              //       //   carouselimages[index], fit: BoxFit.contain,
+              //       //),
+              //     );
+              //   },
+              // ),
+              // ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Image.asset("assets/images/trashbg.png", width: 300, height: 250,),
+              //   ],
+              // )
+              //   ],
+              // ),
+            )),
       ),
     );
   }

@@ -8,8 +8,6 @@ import 'package:trash_it/Auth/Register.dart';
 import 'package:trash_it/Constants/TextStyle.dart';
 import 'package:trash_it/Models/LoginModel.dart';
 import 'package:trash_it/Resources/Resources.dart';
-import 'package:trash_it/Screens/MainHomeTabPage.dart';
-import 'package:trash_it/Screens/Tab.dart';
 import 'package:trash_it/Screens/Tabs/Tab.dart';
 import 'package:trash_it/Utils/Alerts.dart';
 import 'package:trash_it/Utils/ApiUrl.dart';
@@ -25,27 +23,27 @@ class LoginScreenPage extends StatefulWidget {
 
 class _LoginScreenPageState extends State<LoginScreenPage> {
   TextEditingController emailController = TextEditingController();
- // SharedPreferences prefs = SharedPreferences.getInstance();
+  // SharedPreferences prefs = SharedPreferences.getInstance();
   TextEditingController passwordController = TextEditingController();
   bool showObscureText = true;
-Future setToLocalStorage({String? name, dynamic data}) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString(name, data);
-}
+  Future setToLocalStorage({String? name, dynamic data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(name, data);
+  }
 
 // getFromLocalStorage() method will get data from the local storage
-Future getFromLocalStorage({String? name}) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String data = prefs.getString(name);
-  return data;
-}
+  Future getFromLocalStorage({String? name}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String data = prefs.getString(name);
+    return data;
+  }
 
 //   Future setToLocalStorage({required String name, dynamic data}) async {
 //   SharedPreferences prefs = await SharedPreferences.getInstance();
 //   prefs.setString(name, data);
 // }
   //TextEditingController descriptionController = TextEditingController();
-Future<bool> setToken(String value) async {
+  Future<bool> setToken(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('token', value);
   }
@@ -54,6 +52,7 @@ Future<bool> setToken(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
+
   verifyFormAndSubmit() {
     String _email = emailController.text.trim();
     String _password = passwordController.text;
@@ -70,35 +69,33 @@ Future<bool> setToken(String value) async {
   Future<void> loginUser(String email, String password) async {
     Alerts.showProgressDialog(context, "Processing, Please wait..");
     try {
-     
       final response = await http.post(Uri.parse(ApiUrl.LOGIN),
           body: {"email": email, "password": password});
       print(response.body);
-     //  setToLocalStorage(name: 'email', data: email);
+      //  setToLocalStorage(name: 'email', data: email);
       Map<String, dynamic> res = json.decode(response.body);
       LoginModel loginResponse = LoginModel.fromJson(res);
       if (loginResponse.statusCode == 200) {
-
-       
-          Alerts.show(context, "Success", loginResponse.message!.message);
-       String? token = loginResponse.message!.accessToken;
-        setToLocalStorage(name: 'token', data: token);
+        print(loginResponse.message!);
+        Alerts.show(context, "Success", loginResponse.message!.message);
+        String? token = loginResponse.message!.accessToken;
+        await setToLocalStorage(name: 'token', data: token);
+        await setToLocalStorage(name: 'email', data: email);
+        await setToLocalStorage(name: 'password', data: password);
         await FlutterSession().set("token", token);
-    //   await setToLocalStorage(name: 'token', data: token);
-        
+        //   await setToLocalStorage(name: 'token', data: token);
+
         print(token);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
-
-      }
-      else if (loginResponse.status == "failed") {
-         Navigator.of(context).pop();
+      } else if (loginResponse.status == "failed") {
+        Navigator.of(context).pop();
         Alerts.show(context, "Error", loginResponse.message!.message);
         print(loginResponse.message!.message);
       } else {
-         print(loginResponse.message!.message);
+        print(loginResponse.message!.message);
       }
     } catch (exception) {
       Navigator.of(context).pop();
@@ -109,6 +106,7 @@ Future<bool> setToken(String value) async {
     }
   }
 
+  bool _showPassword = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +124,7 @@ Future<bool> setToken(String value) async {
                       child: Container(
                         height: 150,
                         child: Image(
-                          image: AssetImage('assets/images/new_logo.png'),
+                          image: AssetImage('assets/images/trashbg.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -163,165 +161,170 @@ Future<bool> setToken(String value) async {
                       // SizedBox(
                       //   height: 80,
                       // ),
-                      SingleChildScrollView(
-                        child: Container(
-                          height: MediaQuery.of(context).size.height,
-                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                          decoration: BoxDecoration(
-                              color: R.colors
-                                  .splashScreenViewPagerSelectedIndicatorColor,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(25),
-                                  topRight: Radius.circular(25))),
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Text("Email", style: textStyleBold),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Input(
-                                          controller: emailController,
-                                          obscureText: false,
-                                          hintText: 'Enter Email',
-                                          //  hintText: StringUtils.phoneHint,
-                                          ////  inputIcon: "phone.svg",
-                                          keyboard: TextInputType.emailAddress,
-                                          onTap: () {},
-                                          onChanged: () {},
-                                          onSaved: () {},
-                                          validator: () {},
-                                          toggleEye: () {},
-                                        ),
-                                      ],
+                      Column(children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Password", style: textStyleBold),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Input(
-                                          controller: passwordController,
-                                          obscureText: showObscureText,
-                                          // showObscureText: showObscureText,
-                                          hintText: 'Enter Password',
-                                          //    hintText: StringUtils.phoneHint,
-                                          // inputIcon: "phone.svg",
-                                          suffix: GestureDetector(
-                                            onTap: () => setState(() {
-                                              showObscureText =
-                                                  !showObscureText;
-                                            }),
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: showObscureText
-                                                    ? Icon(Icons.remove_red_eye, color: R.colors.splashScreenViewPagerSelectedIndicatorColor,)
-                                                    : Icon(Icons
-                                                        .visibility_off, color: Colors.grey,)),
-                                          ),
-                                          keyboard: TextInputType.text,
-                                          onTap: () {},
-                                          onChanged: () {},
-                                          onSaved: () {},
-                                          validator: () {},
-                                          toggleEye: () {},
-                                        ),
-                                      ],
+                                    Text("Email", style: textStyleBold),
+                                    SizedBox(
+                                      height: 5,
                                     ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  GestureDetector(
-                                    onTap: () {
-                                      verifyFormAndSubmit();
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: 60,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          bottom: 10,
+                                    Input(
+                                      controller: emailController,
+                                      obscureText: false,
+                                      hintText: 'Enter Email',
+                                      //  hintText: StringUtils.phoneHint,
+                                      ////  inputIcon: "phone.svg",
+                                      keyboard: TextInputType.emailAddress,
+                                      onTap: () {},
+                                      onChanged: () {},
+                                      onSaved: () {},
+                                      validator: () {},
+                                      toggleEye: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Password", style: textStyleBold),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextField(
+                                      controller: passwordController,
+                                      keyboardType: TextInputType.text,
+                                      obscureText: !this._showPassword,
+                                      decoration: InputDecoration(
+                                        hintText: "Enter Password",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
                                         ),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color:
-                                                    R.colors.loginButtonColor),
-                                            color: R.colors.loginButtonColor,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Center(
-                                          child: Text(
-                                            "Log In",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: R.colors.whiteMainColor),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                            color: Colors.grey,
+                                            width: 1.0,
                                           ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                            color: R.colors
+                                                .splashScreenViewPagerSelectedIndicatorColor,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                            color: this._showPassword
+                                                ? Colors.blue
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            setState(() => this._showPassword =
+                                                !this._showPassword);
+                                          },
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          R.strings.stillNoAccount,
-                                          style: TextStyle(
-                                              color: R.colors.whiteMainColor,
-                                              fontFamily: R.strings.fontName,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        RegisterScreenPage()));
-                                          },
-                                          child: Text(
-                                            R.strings.register,
-                                            style: TextStyle(
-                                                color: R
-                                                    .colors.textBackgroundColor,
-                                                fontFamily: R.strings.fontName,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                  ],
+                                ),
                               ),
-                            )
-                          ]),
-                        ),
-                      )
+                              SizedBox(height: 20),
+                              GestureDetector(
+                                onTap: () {
+                                  //                            Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) => HomePage()),
+                                  // );
+                                  verifyFormAndSubmit();
+                                },
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 60,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: R.colors
+                                                .splashScreenViewPagerSelectedIndicatorColor),
+                                        color: R.colors
+                                            .splashScreenViewPagerSelectedIndicatorColor,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Center(
+                                      child: Text(
+                                        "Log In",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: R.colors.whiteMainColor),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      R.strings.stillNoAccount,
+                                      style: TextStyle(
+                                          color: R.colors.textBackgroundColor,
+                                          fontFamily: R.strings.fontName,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    RegisterScreenPage()));
+                                      },
+                                      child: Text(
+                                        R.strings.register,
+                                        style: TextStyle(
+                                            color: R.colors
+                                                .splashScreenViewPagerSelectedIndicatorColor,
+                                            fontFamily: R.strings.fontName,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ])
                     ],
                   ),
                 ]),

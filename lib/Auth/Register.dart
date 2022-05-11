@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:trash_it/Widgets/DropDown.dart';
 import 'package:trash_it/Widgets/Inputs.dart';
 
+import 'ContinueReg.dart';
 import 'OTPScreen.dart';
 
 class RegisterScreenPage extends StatefulWidget {
@@ -57,7 +58,6 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
       isLoading = true;
     });
     try {
-     
       final response = await http.get(Uri.parse(ApiUrl.OPERATORS_LIST));
       if (response.statusCode == 200) {
         dynamic res = jsonDecode(response.body);
@@ -212,10 +212,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
       } else if (registerResponse.status == "success") {
         ///Navigator.of(context).pop();
         // Alerts.show(context, "Error", res["message"]);
-      } else {
-       
-
-      }
+      } else {}
       print(res);
     } catch (exception) {
       //  Navigator.of(context).pop();
@@ -226,9 +223,9 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
   @override
   void initState() {
     super.initState();
-    getOperatorList();
-    getLgaList();
-    getWardList();
+    // getOperatorList();
+    // getLgaList();
+    // getWardList();
   }
 
   @override
@@ -236,23 +233,26 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
                 Widget>[
               SizedBox(
-                height: 15,
+                height: 50,
               ),
               Padding(
-                  child: Container(
-                    height: 150,
-                    child: Image(
-                      image: AssetImage('assets/images/new_logo.png'),
-                      fit: BoxFit.fill,
+                  child: Center(
+                    child: Container(
+                      height: 150,
+                      child: Image(
+                        image: AssetImage('assets/images/trashbg.png'),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                   padding: EdgeInsets.only(top: 30, left: 10)),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 30.0, 0, 0),
@@ -266,10 +266,10 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(20, 15.0, 50, 0),
+                    padding: EdgeInsets.fromLTRB(20, 15.0, 20, 0),
                     child: Text(
                       R.strings.welcomDescription,
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: R.strings.fontName,
@@ -277,594 +277,172 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                           fontWeight: FontWeight.w300),
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: Container(
-                      // height: MediaQuery.of(context).size.height ,
-                      margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                      decoration: BoxDecoration(
-                          color: R.colors
-                              .splashScreenViewPagerSelectedIndicatorColor,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25))),
-                      width: MediaQuery.of(context).size.width,
-                      child: Form(
-                        key: formKey,
-                        child: Column(children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text("Customer ID", style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Input(
-                                              controller: customerIdController,
-                                              obscureText: false,
-                                              hintText:
-                                                  'Enter Customer Id (As it appears on the bill)',
-                                              keyboard:
-                                                  TextInputType.emailAddress,
-                                              onTap: () {},
-                                              onChanged: () {},
-                                              onSaved: (val) {
-                                                //customerId = val;
-                                              },
-                                              validator: (String value) {
-                                                if (value.isEmpty) {
-                                                  return 'Customer Id is required';
-                                                }
-                                                return null;
-                                              },
-                                              toggleEye: () {},
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              validateWithId();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                  color: R
-                                                      .colors.loginButtonColor),
-                                              child: Icon(
-                                                Icons.done,
-                                                color: Colors.white,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        //  height: MediaQuery.of(context).size.height ,
+                        margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25))),
+                        width: MediaQuery.of(context).size.width,
+                        child: Form(
+                          key: formKey,
+                          child: Column(children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text("Customer ID",
+                                            style: textStyleBold),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Input(
+                                                controller:
+                                                    customerIdController,
+                                                obscureText: false,
+                                                hintText:
+                                                    'Enter Customer Id (As it appears on the bill)',
+                                                keyboard:
+                                                    TextInputType.emailAddress,
+                                                onTap: () {},
+                                                onChanged: () {},
+                                                onSaved: (val) {
+                                                  //customerId = val;
+                                                },
+                                                validator: (String value) {
+                                                  if (value.isEmpty) {
+                                                    return 'Customer Id is required';
+                                                  }
+                                                  return null;
+                                                },
+                                                toggleEye: () {},
                                               ),
-                                              height: 55,
-                                              width: 55,
-                                              // color: Colors.green,
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("First Name ", style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        controller: fisrtNameController,
-                                        obscureText: false,
-                                        hintText:
-                                            'Enter First Name (As it appears on the bill)',
-                                        keyboard: TextInputType.emailAddress,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: () {},
-                                        validator: () {},
-                                        toggleEye: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Last Name ", style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        controller: lastNameController,
-                                        obscureText: false,
-                                        hintText:
-                                            'Enter Last Name (As it appears on the bill)',
-                                        keyboard: TextInputType.emailAddress,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: () {},
-                                        validator: () {},
-                                        toggleEye: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Email", style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        controller: emailController,
-                                        obscureText: false,
-                                        hintText: 'Enter Email',
-                                        keyboard: TextInputType.emailAddress,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: () {},
-                                        validator: () {},
-                                        toggleEye: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Mobile Number",
-                                          style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        controller: phoneController,
-                                        obscureText: false,
-                                        hintText: 'Enter Mobile Number',
-                                        keyboard: TextInputType.emailAddress,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: () {},
-                                        validator: () {},
-                                        toggleEye: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Service Provider",
-                                        style: textStyleBold),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: R.colors.whiteMainColor)),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          hint: operator == null
-                                              ? Text('Select Service Provider')
-                                              : Text(
-                                                  operator!,
-                                                  style: TextStyle(
-                                                      color: R.colors
-                                                          .loginButtonColor),
-                                                ),
-                                          isExpanded: true,
-                                          iconSize: 30.0,
-                                          style: TextStyle(
-                                              color: R.colors.loginButtonColor),
-                                          items: propertyList!.map(
-                                            (val) {
-                                              return DropdownMenuItem<String>(
-                                                value: val["company_name"],
-                                                child:
-                                                    Text(val["company_name"]),
-                                              );
-                                            },
-                                          ).toList(),
-                                          onChanged: (val) {
-                                            setState(
-                                              () {
-                                                operator = val.toString();
-                                                companyId = propertyList![
-                                                    propertyList!.indexWhere(
-                                                        (element) =>
-                                                            element[
-                                                                "company_name"] ==
-                                                            operator)]["company_id"];
-                                                int a = int.parse(
-                                                    companyId.toString());
-                                                print(a);
-                                                // companyId = val["company_id"];
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                validateWithId();
                                               },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Ward", style: textStyleBold),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: R.colors.whiteMainColor)),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          hint: ward == null
-                                              ? Text('Select Ward')
-                                              : Text(
-                                                  ward!,
-                                                  style: TextStyle(
-                                                      color: R.colors
-                                                          .loginButtonColor),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                    color: R.colors
+                                                        .splashScreenViewPagerSelectedIndicatorColor),
+                                                child: Icon(
+                                                  Icons.done,
+                                                  color: Colors.white,
                                                 ),
-                                          isExpanded: true,
-                                          iconSize: 30.0,
-                                          style: TextStyle(
-                                              color: R.colors.loginButtonColor),
-                                          items: wardList!.map(
-                                            (val) {
-                                              return DropdownMenuItem<String>(
-                                                value: val["ward_name"],
-                                                child: Text(val["ward_name"]),
-                                              );
-                                            },
-                                          ).toList(),
-                                          onChanged: (val) {
-                                            setState(
-                                              () {
-                                                ward = val.toString();
-                                              },
-                                            );
-                                          },
+                                                height: 58,
+                                                width: 55,
+                                                // color: Colors.green,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Local Govt", style: textStyleBold),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: R.colors.whiteMainColor)),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          hint: lga == null
-                                              ? Text('Select Local Govt')
-                                              : Text(
-                                                  lga!,
-                                                  style: TextStyle(
-                                                      color: R.colors
-                                                          .loginButtonColor),
-                                                ),
-                                          isExpanded: true,
-                                          iconSize: 30.0,
-                                          style: TextStyle(
-                                              color: R.colors.loginButtonColor),
-                                          items: lgaList!.map(
-                                            (val) {
-                                              return DropdownMenuItem<String>(
-                                                value: val["lga_name"],
-                                                child: Text(val["lga_name"]),
-                                              );
-                                            },
-                                          ).toList(),
-                                          onChanged: (val) {
-                                            setState(
-                                              () {
-                                                lga = val.toString();
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Property Type", style: textStyleBold),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: R.colors.whiteMainColor)),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton(
-                                          hint: propertyType == null
-                                              ? Text('Select Property Type')
-                                              : Text(
-                                                  propertyType!,
-                                                  style: TextStyle(
-                                                      color: R.colors
-                                                          .loginButtonColor),
-                                                ),
-                                          isExpanded: true,
-                                          iconSize: 30.0,
-                                          style: TextStyle(
-                                              color: R.colors.loginButtonColor),
-                                          items: proType.map(
-                                            (val) {
-                                              return DropdownMenuItem<String>(
-                                                value: val,
-                                                child: Text(val),
-                                              );
-                                            },
-                                          ).toList(),
-                                          onChanged: (val) {
-                                            setState(
-                                              () {
-                                                propertyType = val.toString();
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Password", style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        controller: passwordController,
-                                        obscureText: showObscureText,
-                                        hintText: 'Enter Password',
-                                        keyboard: TextInputType.text,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'Password is required';
-                                          } else if (value.length < 8) {
-                                            return 'Password must be at least 6 characters';
-                                          }
-                                          return null;
-                                        },
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'Password is required';
-                                          } else if (value.length < 8) {
-                                            return 'Password must be at least 6 characters';
-                                          }
-                                          return null;
-                                        },
-
-                                        toggleEye: () {},
-                                        // ob
-                                        suffix: GestureDetector(
-                                          onTap: () => setState(() {
-                                            showObscureText = !showObscureText;
-                                          }),
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10.0),
-                                              child: showObscureText
-                                                  ? Icon(
-                                                      Icons.remove_red_eye,
-                                                      color: R.colors
-                                                          .splashScreenViewPagerSelectedIndicatorColor,
-                                                    )
-                                                  : Icon(
-                                                      Icons.visibility_off,
-                                                      color: Colors.grey,
-                                                    )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Confirm Password",
-                                          style: textStyleBold),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Input(
-                                        obscureText: showObscureText1,
-                                        hintText: 'Confirm Password',
-                                        keyboard: TextInputType.emailAddress,
-                                        onTap: () {},
-                                        onChanged: () {},
-                                        onSaved: () {},
-                                        validator: () {},
-                                        toggleEye: () {},
-                                        suffix: GestureDetector(
-                                          onTap: () => setState(() {
-                                            showObscureText1 =
-                                                !showObscureText1;
-                                          }),
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10.0),
-                                              child: showObscureText1
-                                                  ? Icon(
-                                                      Icons.remove_red_eye,
-                                                      color: R.colors
-                                                          .splashScreenViewPagerSelectedIndicatorColor,
-                                                    )
-                                                  : Icon(
-                                                      Icons.visibility_off,
-                                                      color: Colors.grey,
-                                                    )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                GestureDetector(
-                                  onTap: () {
-                                    FocusScope.of(context).unfocus();
-                                    if (formKey.currentState!.validate()) {
-                                      formKey.currentState!.save();
-                                      //  showCupertinoModalBottomSheet
-                                      registerUser();
-                                      // sendOTP();
-                                    }
-                                  },
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: 60,
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                        bottom: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: R.colors.loginButtonColor),
-                                          color: R.colors.loginButtonColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Center(
-                                        child: Text(
-                                          "Sign Up",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: R.colors.whiteMainColor),
-                                        ),
-                                      ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        R.strings.alreadyHaveAnAccount,
-                                        style: TextStyle(
-                                            color: R.colors.whiteMainColor,
-                                            fontFamily: R.strings.fontName,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      LoginScreenPage()));
-                                        },
-                                        child: Text(
-                                          R.strings.logIn,
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          R.strings.alreadyHaveAnAccount,
                                           style: TextStyle(
                                               color:
                                                   R.colors.textBackgroundColor,
                                               fontFamily: R.strings.fontName,
-                                              fontSize: 17,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w400),
                                         ),
-                                      )
-                                    ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        LoginScreenPage()));
+                                          },
+                                          child: Text(
+                                            R.strings.logIn,
+                                            style: TextStyle(
+                                                color: R.colors
+                                                    .splashScreenViewPagerSelectedIndicatorColor,
+                                                fontFamily: R.strings.fontName,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
-                            ),
-                          )
-                        ]),
+                                  Divider(),
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "If you don't have a Customer ID",
+                                          style: TextStyle(
+                                              color:
+                                                  R.colors.textBackgroundColor,
+                                              fontFamily: R.strings.fontName,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Alerts.show(context, "Contact Us",
+                                                "0808-TRASH-IT");
+                                          },
+                                          child: Text(
+                                            " Click Here",
+                                            style: TextStyle(
+                                                color: R.colors
+                                                    .splashScreenViewPagerSelectedIndicatorColor,
+                                                fontFamily: R.strings.fontName,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ]),
+                        ),
                       ),
-                    ),
+                    ],
                   )
                 ],
               ),
@@ -902,17 +480,35 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
       if (decoded.statusCode == 200) {
         print(decoded.status);
         Navigator.of(context).pop();
-        Alerts.show(context, "Success", decoded.responseType);
-        fisrtNameController.text = decoded.message!.firstName!;
-        lastNameController.text = decoded.message!.lastName!;
-        emailController.text = decoded.message!.email!;
-       
-        operator = decoded.message!.company!.companyName!;
-        companyId = int.parse(decoded.message!.company!.companyId!);
-        propertyType = decoded.message!.propertyType!;
-        ward = decoded.message!.ward!.wardName!;
-        lga = decoded.message!.localGovt!.lgName!;
-         phoneController.text = "07606060".toString();
+        Alerts.continueReg(context, "Success", decoded.responseType, () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ContinueRegistrationScreen(
+                        customerIdController.text.trim(),
+                        decoded.message!.email!,
+                        decoded.message!.firstName!,
+                        decoded.message!.lastName!,
+                        // decoded.message!.phone!.toString(),
+                        decoded.message!.ward!.wardName!,
+                        decoded.message!.localGovt!.lgName!,
+                        decoded.message!.company!.companyName!,
+                        decoded.message!.company!.companyId!,
+                        decoded.message!.propertyType!,
+                      )));
+        });
+        // Navigator.of(context).pop();
+
+        // fisrtNameController.text = decoded.message!.firstName!;
+        // lastNameController.text = decoded.message!.lastName!;
+        // emailController.text = decoded.message!.email!;
+
+        // operator = decoded.message!.company!.companyName!;
+        // companyId = int.parse(decoded.message!.company!.companyId!);
+        // propertyType = decoded.message!.propertyType!;
+        // ward = decoded.message!.ward!.wardName!;
+        // lga = decoded.message!.localGovt!.lgName!;
+        //  phoneController.text = "07606060".toString();
       } else if (decoded.status == "failed") {
         Navigator.of(context).pop();
         Alerts.show(context, "Error", decoded.responseType);

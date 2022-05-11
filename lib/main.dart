@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/landing_page.dart';
 
-void main() {
+import 'Auth/AutoLogin.dart';
+import 'Auth/Login.dart';
+import 'Screens/Tabs/Tab.dart';
+
+int? isviewed;
+void main() async{
+   WidgetsFlutterBinding.ensureInitialized();
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+  isviewed = prefs.getInt('onBoard');
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  
+  @override
+  
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Trash It',
       theme: ThemeData(
-      
-        primarySwatch: Colors.blue,
+      fontFamily: "Lato",
+        primarySwatch: Colors.teal,
       ),
-      home: LandingPageScreen(),
+       home: isviewed != 0 ? LandingPageScreen() : HomePage(),
     );
   }
 }

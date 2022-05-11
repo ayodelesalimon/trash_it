@@ -11,8 +11,8 @@ class StringResources {
 
 
   //Get Started Page
-  String welcomeText = "Welcome to Trash IT";
-  String welcomDescription = "Please register in our application to continue work with ";
+  String welcomeText = "Welcome to TrashIT";
+  String welcomDescription = "Waste utility payment simplified while promoting a cleaner envinronment ";
 
   String userName = "Enter Your Full Name";
   String email = "Enter Your E - Mail";
@@ -29,7 +29,7 @@ class StringResources {
 
   //Login Page
   String welcomeTextLogin = "Welcome";
-  String welcomeDescriptionLogin = "Please enter  your phone number to continue";
+  String welcomeDescriptionLogin = "Please login in our application to continue work with ";
   String stillNoAccount = "Still have no accout? ";
   String register = "Register";
 

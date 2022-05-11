@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 
 class Alerts {
   static Future<void> show(context, title, message) async {
@@ -18,15 +16,14 @@ class Alerts {
             TextButton(
               child: Text("Ok"),
               onPressed: () {
-                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 //  pushNewScreen(
                 //             context,
                 //             screen: MyApp(),
-                            
+
                 //             pageTransitionAnimation:
                 //                 PageTransitionAnimation.cupertino,
                 //           );
-        
               },
             ),
           ],
@@ -34,6 +31,31 @@ class Alerts {
       },
     );
   }
+
+  static Future<void> continueReg(context, title, message, Function onTap) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Text(message),
+          ),
+          actions: <Widget>[
+            TextButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  onTap()?.call();
+                 // Navigator.of(context).pop();
+                 
+                }),
+          ],
+        );
+      },
+    );
+  }
+
   static Future<void> showMember(context, title, message) async {
     return showDialog<void>(
       context: context,
@@ -49,8 +71,6 @@ class Alerts {
               child: Text("Ok"),
               onPressed: () {
                 // Navigator.of(context).pop();
-             
-        
               },
             ),
           ],
@@ -72,9 +92,7 @@ class Alerts {
           actions: <Widget>[
             TextButton(
               child: Text("Ok"),
-              onPressed: () {
-              
-              },
+              onPressed: () {},
             ),
           ],
         );
@@ -95,9 +113,7 @@ class Alerts {
           actions: <Widget>[
             TextButton(
               child: Text("Ok"),
-              onPressed: () {
-               
-              },
+              onPressed: () {},
             ),
           ],
         );
