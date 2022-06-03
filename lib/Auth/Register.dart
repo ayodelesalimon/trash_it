@@ -42,6 +42,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
   List? lgaList = [];
   bool showObscureText = true;
   bool showObscureText1 = true;
+  String phone = "";
   TextEditingController fisrtNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -53,179 +54,31 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
   TextEditingController localGovtController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future getOperatorList() async {
-    setState(() {
-      isLoading = true;
-    });
+  Future getInfo() async {
     try {
-      final response = await http.get(Uri.parse(ApiUrl.OPERATORS_LIST));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          propertyList = res;
-          print(propertyList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
-  Future getWardList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // final dio = Dio();
-      final response = await http.get(Uri.parse(ApiUrl.WARDS));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          wardList = res;
-          print(wardList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
-  Future getLgaList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // final dio = Dio();
-      final response = await http.get(Uri.parse(ApiUrl.LGA));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          lgaList = res;
-          print(lgaList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
-  registerUser() {
-    String _customerId = customerIdController.text.trim();
-    String _lastName = lastNameController.text.trim();
-    String _firstName = fisrtNameController.text.trim();
-    String _companyId = companyId!.toString();
-    String _email = emailController.text.trim();
-    String _phone = phoneController.text.trim();
-    String _password = passwordController.text.trim();
-
-    if (_customerId == "" ||
-        _lastName == "" ||
-        _firstName == "" ||
-        _companyId == "" ||
-        _email == "" ||
-        _phone == "" ||
-        _password == "") {
-      Alerts.show(context, "Error", "Please fill all the fields");
-    } else {
-      registerUserId(_customerId, _lastName, _firstName, _companyId, _email,
-          _phone, _password);
-    }
-  }
-
-  Future<void> registerUserId(
-    String customerId,
-    String lastName,
-    String firstName,
-    String companyId,
-    String email,
-    String phone,
-    String password,
-  ) async {
-    //  Alerts.showProgressDialog(context, "Processing, Please wait..");
-    try {
-      final response = await http.post(Uri.parse(ApiUrl.REGISTER), body: {
-        "customer_id": customerId,
-        "first_name": firstName,
-        "last_name": lastName,
-        "company_id": companyId,
-        "email": email,
-        "password": password,
-        "phone": phone
-      });
-      // print(response.reasonPhrase);
-      // print(response);
-      // print(response.body);
-      // print(response.statusCode);
-
-      // Navigator.of(context).pop();
+      final response = await http.get(
+        Uri.parse(
+          ApiUrl.GET_INFO,
+        ),
+      );
+      // UserProfileModel profileModel = UserProfileModel.fromJson(response);
       print(response.body);
-      Map<String, dynamic> res = json.decode(response.body);
-      RegisterModel registerResponse = RegisterModel.fromJson(res);
-
-      if (registerResponse.statusCode == 200 ||
-          registerResponse.status == "success") {
-        showModalBottomSheet(
-            enableDrag: true,
-            backgroundColor: Colors.transparent,
-            context: context,
-            //  expand: false,
-            isDismissible: true,
-            //  topRadius: Radius.circular(30),
-            builder: (context) {
-              return Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  padding: MediaQuery.of(context).viewInsets,
-                  child: PinCodeVerificationScreen(emailController.text));
-            });
-      } else if (registerResponse.status == "failed") {
-        //    Alerts.show(context, "Error", registerResponse.message!.customerId![0]);
-      } else if (registerResponse.status == "success") {
-        ///Navigator.of(context).pop();
-        // Alerts.show(context, "Error", res["message"]);
+      if (response.statusCode == 200) {
+        dynamic resData = jsonDecode(response.body);
+        setState(() {
+          phone = resData["message"]["official_phone"];
+        });
       } else {}
-      print(res);
-    } catch (exception) {
-      //  Navigator.of(context).pop();
-      print(exception);
+    } catch (e) {
+      // print(e);
+
     }
   }
 
   @override
   void initState() {
     super.initState();
-    // getOperatorList();
-    // getLgaList();
-    // getWardList();
+    getInfo();
   }
 
   @override
@@ -420,8 +273,8 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            Alerts.show(context, "Contact Us",
-                                                "0808-TRASH-IT");
+                                            Alerts.show(
+                                                context, "Contact Us", phone);
                                           },
                                           child: Text(
                                             " Click Here",
@@ -458,8 +311,6 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
 
     if (_customerId == "") {
       Alerts.show(context, "Error", "Customer Id is required");
-    } else if (_customerId.length < 6) {
-      Alerts.show(context, "Error", "Customer Id must be 6 digits");
     } else {
       validateUser(
         _customerId,

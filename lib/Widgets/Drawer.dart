@@ -32,7 +32,7 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
   String tollFree = "";
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
@@ -72,11 +72,6 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
           ),
           (Route<dynamic> route) => false,
         );
-        // dynamic resData = jsonDecode(response.body);
-        // setState(() {
-        //   fb = resData["message"]["facebook"];
-        //   insta = resData["message"]["instagram"];
-        // });
       } else {
         Navigator.pushAndRemoveUntil(
           context,
@@ -340,9 +335,9 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-             ListTile(
+            ListTile(
               onTap: () async {
-                   Navigator.pop(context);
+                Navigator.pop(context);
                 Alerts.show(context, "", tollFree);
               },
               leading: Image.asset(
@@ -400,7 +395,11 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
             Center(
               child: ListTile(
                 onTap: () async {
-                  await logOut();
+                  Alerts.signOut(
+                      context, "Logout", "Do you want to Logout of the App",
+                      () async {
+                    await logOut();
+                  });
                 },
                 leading: Image.asset(
                   "assets/icons/logout.png",

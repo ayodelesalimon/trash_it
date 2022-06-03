@@ -32,16 +32,16 @@ class ContinueRegistrationScreen extends StatefulWidget {
     this.operatorId,
     this.propertyType,
   );
-  String? customerid;
-  String? firstName;
-  String? lastName;
-  String? email;
+  String customerid;
+  String firstName;
+  String lastName;
+  String email;
   // String? phoneNumber;
-  String? serviceProvider;
-  String? ward;
-  String? lga;
-  String? operatorId;
-  String? propertyType;
+  String serviceProvider;
+  String ward;
+  String lga;
+  String operatorId;
+  String propertyType;
 
   @override
   _ContinueRegistrationScreenState createState() =>
@@ -78,93 +78,7 @@ class _ContinueRegistrationScreenState
   TextEditingController localGovtController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future getOperatorList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // final dio = Dio();
-      final response = await http.get(Uri.parse(ApiUrl.OPERATORS_LIST));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          propertyList = res;
-          print(propertyList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
-  Future getWardList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // final dio = Dio();
-      final response = await http.get(Uri.parse(ApiUrl.WARDS));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          wardList = res;
-          print(wardList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
-  Future getLgaList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      // final dio = Dio();
-      final response = await http.get(Uri.parse(ApiUrl.LGA));
-      if (response.statusCode == 200) {
-        dynamic res = jsonDecode(response.body);
-        print(res);
-        setState(() {
-          lgaList = res;
-          print(lgaList);
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-        isError = true;
-      });
-    }
-  }
-
+  
   registerUser() {
     String _customerId = customerIdController.text.trim();
     String _lastName = lastNameController.text.trim();
@@ -208,14 +122,7 @@ class _ContinueRegistrationScreenState
         "password": password,
         "phone": phone
       });
-      print(response.reasonPhrase);
-      print(response);
-      print(response.body.toString());
-      print(response.statusCode);
-      print(response.request);
-
-      // Navigator.of(context).pop();
-      print(response.body);
+  
       Map<String, dynamic> res = json.decode(response.body);
       RegisterModel registerResponse = RegisterModel.fromJson(res);
 
@@ -251,8 +158,7 @@ class _ContinueRegistrationScreenState
             });
         // Alerts.show(context, "Error", errorModel!.status);
       } else if (registerResponse.status == "success") {
-        ///Navigator.of(context).pop();
-        // Alerts.show(context, "Error", res["message"]);
+       
       } else {}
       print(res);
     } catch (exception) {
@@ -264,31 +170,21 @@ class _ContinueRegistrationScreenState
   @override
   void initState() {
     //  print(widget.phoneNumber);
-    customerIdController.text = widget.customerid!;
-    fisrtNameController.text = widget.firstName!;
-    lastNameController.text = widget.lastName!;
-    emailController.text = widget.email!;
-    companyId = widget.operatorId!;
+    customerIdController.text = widget.customerid;
+    fisrtNameController.text = widget.firstName;
+    lastNameController.text = widget.lastName;
+    emailController.text = widget.email;
+    companyId = widget.operatorId;
     operator = widget.serviceProvider;
 
     //  companyId = int.parse(widget.company!.companyId!);
-    propertyType = widget.propertyType!;
-    ward = widget.ward!;
-    lga = widget.lga!;
-    // phoneController.text = widget.phoneNumber.toString();
-    // widget.customerid = customerIdController.text;
-    // widget.firstName = fisrtNameController.text;
-    // widget.lastName = lastNameController.text;
-    // widget.email = emailController.text;
-    // widget.phoneNumber = phoneController.text;
-    // widget.ward = lga;
-    // widget.lga = lga;
-    // widget.serviceProvider = operator;
+    propertyType = widget.propertyType;
+    ward = widget.ward;
+    lga = widget.lga;
+   
     super.initState();
 
-    // getOperatorList();
-    // getLgaList();
-    // getWardList();
+ 
   }
 
   @override
@@ -439,7 +335,7 @@ class _ContinueRegistrationScreenState
                                     height: 5,
                                   ),
                                   Input(
-                                    enable: false,
+                                    enable: true,
                                     controller: emailController,
                                     obscureText: false,
                                     hintText: 'Enter Email',
@@ -494,225 +390,7 @@ class _ContinueRegistrationScreenState
                                 ],
                               ),
                             ),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text("Service Provider",
-                            //         style: textStyleBold),
-                            //     SizedBox(
-                            //       height: 5,
-                            //     ),
-                            //     Container(
-                            //       padding:
-                            //           EdgeInsets.only(left: 10, right: 10),
-                            //       decoration: BoxDecoration(
-                            //           borderRadius:
-                            //               BorderRadius.circular(5.0),
-                            //           color: Colors.white,
-                            //           border: Border.all(
-                            //               color: R.colors.whiteMainColor)),
-                            //       child: DropdownButtonHideUnderline(
-                            //         child: DropdownButton(
-                            //           hint: operator == null
-                            //               ? Text('Select Service Provider')
-                            //               : Text(
-                            //                   operator!,
-                            //                   style: TextStyle(
-                            //                       color: R.colors
-                            //                           .loginButtonColor),
-                            //                 ),
-                            //           isExpanded: true,
-                            //           iconSize: 30.0,
-                            //           style: TextStyle(
-                            //               color: R.colors.loginButtonColor),
-                            //           items: propertyList!.map(
-                            //             (val) {
-                            //               return DropdownMenuItem<String>(
-                            //                 value: val["company_name"],
-                            //                 child:
-                            //                     Text(val["company_name"]),
-                            //               );
-                            //             },
-                            //           ).toList(),
-                            //           onChanged: (val) {
-                            //             setState(
-                            //               () {
-                            //                 operator = val.toString();
-                            //                 companyId = propertyList![
-                            //                     propertyList!.indexWhere(
-                            //                         (element) =>
-                            //                             element[
-                            //                                 "company_name"] ==
-                            //                             operator)]["company_id"];
-                            //                 int a = int.parse(
-                            //                     companyId.toString());
-                            //                 print(a);
-                            //                 // companyId = val["company_id"];
-                            //               },
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 5,
-                            // ),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text("Ward", style: textStyleBold),
-                            //     SizedBox(
-                            //       height: 5,
-                            //     ),
-                            //     Container(
-                            //       padding:
-                            //           EdgeInsets.only(left: 10, right: 10),
-                            //       decoration: BoxDecoration(
-                            //           borderRadius:
-                            //               BorderRadius.circular(5.0),
-                            //           color: Colors.white,
-                            //           border: Border.all(
-                            //               color: R.colors.whiteMainColor)),
-                            //       child: DropdownButtonHideUnderline(
-                            //         child: DropdownButton(
-                            //           hint: ward == null
-                            //               ? Text('Select Ward')
-                            //               : Text(
-                            //                   ward!,
-                            //                   style: TextStyle(
-                            //                       color: R.colors
-                            //                           .loginButtonColor),
-                            //                 ),
-                            //           isExpanded: true,
-                            //           iconSize: 30.0,
-                            //           style: TextStyle(
-                            //               color: R.colors.loginButtonColor),
-                            //           items: wardList!.map(
-                            //             (val) {
-                            //               return DropdownMenuItem<String>(
-                            //                 value: val["ward_name"],
-                            //                 child: Text(val["ward_name"]),
-                            //               );
-                            //             },
-                            //           ).toList(),
-                            //           onChanged: (val) {
-                            //             setState(
-                            //               () {
-                            //                 ward = val.toString();
-                            //               },
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 5,
-                            // ),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text("Local Govt", style: textStyleBold),
-                            //     SizedBox(
-                            //       height: 5,
-                            //     ),
-                            //     Container(
-                            //       padding:
-                            //           EdgeInsets.only(left: 10, right: 10),
-                            //       decoration: BoxDecoration(
-                            //           borderRadius:
-                            //               BorderRadius.circular(5.0),
-                            //           color: Colors.white,
-                            //           border: Border.all(
-                            //               color: R.colors.whiteMainColor)),
-                            //       child: DropdownButtonHideUnderline(
-                            //         child: DropdownButton(
-                            //           hint: lga == null
-                            //               ? Text('Select Local Govt')
-                            //               : Text(
-                            //                   lga!,
-                            //                   style: TextStyle(
-                            //                       color: R.colors
-                            //                           .loginButtonColor),
-                            //                 ),
-                            //           isExpanded: true,
-                            //           iconSize: 30.0,
-                            //           style: TextStyle(
-                            //               color: R.colors.loginButtonColor),
-                            //           items: lgaList!.map(
-                            //             (val) {
-                            //               return DropdownMenuItem<String>(
-                            //                 value: val["lga_name"],
-                            //                 child: Text(val["lga_name"]),
-                            //               );
-                            //             },
-                            //           ).toList(),
-                            //           onChanged: (val) {
-                            //             setState(
-                            //               () {
-                            //                 lga = val.toString();
-                            //               },
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 5,
-                            // ),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text("Property Type", style: textStyleBold),
-                            //     SizedBox(
-                            //       height: 5,
-                            //     ),
-                            //     Container(
-                            //       padding: EdgeInsets.only(left: 10, right: 10),
-                            //       decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.circular(5.0),
-                            //           color: Colors.white,
-                            //           border: Border.all(
-                            //               color: R.colors.whiteMainColor)),
-                            //       child: DropdownButtonHideUnderline(
-                            //         child: DropdownButton(
-                            //           hint: propertyType == null
-                            //               ? Text('Select Property Type')
-                            //               : Text(
-                            //                   propertyType!,
-                            //                   style: TextStyle(
-                            //                       color: R
-                            //                           .colors.loginButtonColor),
-                            //                 ),
-                            //           isExpanded: true,
-                            //           iconSize: 30.0,
-                            //           style: TextStyle(
-                            //               color: R.colors.loginButtonColor),
-                            //           items: proType.map(
-                            //             (val) {
-                            //               return DropdownMenuItem<String>(
-                            //                 value: val,
-                            //                 child: Text(val),
-                            //               );
-                            //             },
-                            //           ).toList(),
-                            //           onChanged: (val) {
-                            //             setState(
-                            //               () {
-                            //                 propertyType = val.toString();
-                            //               },
-                            //             );
-                            //           },
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
+                           
                             SizedBox(
                               height: 5,
                             ),
@@ -725,51 +403,7 @@ class _ContinueRegistrationScreenState
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  // Input(
-                                  //   controller: passwordController,
-                                  //   obscureText: showObscureText,
-                                  //   hintText: 'Enter Password',
-                                  //   keyboard: TextInputType.text,
-                                  //   onTap: () {},
-                                  //   onChanged: () {},
-                                  //   onSaved: (String value) {
-                                  //     if (value.isEmpty) {
-                                  //       return 'Password is required';
-                                  //     } else if (value.length < 8) {
-                                  //       return 'Password must be at least 6 characters';
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  //   validator: (String value) {
-                                  //     if (value.isEmpty) {
-                                  //       return 'Password is required';
-                                  //     } else if (value.length < 8) {
-                                  //       return 'Password must be at least 6 characters';
-                                  //     }
-                                  //     return null;
-                                  //   },
-
-                                  //   toggleEye: () {},
-                                  //   // ob
-                                  //   suffix: GestureDetector(
-                                  //     onTap: () => setState(() {
-                                  //       showObscureText = !showObscureText;
-                                  //     }),
-                                  //     child: Padding(
-                                  //         padding: const EdgeInsets.only(
-                                  //             right: 10.0),
-                                  //         child: showObscureText
-                                  //             ? Icon(
-                                  //                 Icons.remove_red_eye,
-                                  //                 color: R.colors
-                                  //                     .splashScreenViewPagerSelectedIndicatorColor,
-                                  //               )
-                                  //             : Icon(
-                                  //                 Icons.visibility_off,
-                                  //                 color: Colors.grey,
-                                  //               )),
-                                  //   ),
-                                  // ),
+                                 
 
                                   TextFormField(
                                     onSaved: (String? value) {
@@ -843,56 +477,16 @@ class _ContinueRegistrationScreenState
                             SizedBox(
                               height: 5,
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(bottom: 8.0),
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Text("Confirm Password",
-                            //           style: textStyleBold),
-                            //       SizedBox(
-                            //         height: 5,
-                            //       ),
-                            // Input(
-                            //   obscureText: showObscureText1,
-                            //   hintText: 'Confirm Password',
-                            //   keyboard: TextInputType.emailAddress,
-                            //   onTap: () {},
-                            //   onChanged: () {},
-                            //   onSaved: () {},
-                            //   validator: () {},
-                            //   toggleEye: () {},
-                            //   suffix: GestureDetector(
-                            //     onTap: () => setState(() {
-                            //       showObscureText1 = !showObscureText1;
-                            //     }),
-                            //     child: Padding(
-                            //         padding: const EdgeInsets.only(
-                            //             right: 10.0),
-                            //         child: showObscureText1
-                            //             ? Icon(
-                            //                 Icons.remove_red_eye,
-                            //                 color: R.colors
-                            //                     .splashScreenViewPagerSelectedIndicatorColor,
-                            //               )
-                            //             : Icon(
-                            //                 Icons.visibility_off,
-                            //                 color: Colors.grey,
-                            //               )),
-                            //   ),
-                            // ),
-                            //   ],
-                            // ),
-                            //  ),
+                           
                             SizedBox(height: 20),
                             GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                                 if (formKey.currentState!.validate()) {
                                   formKey.currentState!.save();
-                                  //  showCupertinoModalBottomSheet
+                                 
                                   registerUser();
-                                  // sendOTP();
+                                 
                                 }
                               },
                               child: SizedBox(

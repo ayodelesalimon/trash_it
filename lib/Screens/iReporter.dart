@@ -31,7 +31,7 @@ class _IReporterScreenState extends State<IReporterScreen> {
 
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
@@ -167,9 +167,9 @@ class _IReporterScreenState extends State<IReporterScreen> {
                         child: DropdownButton(
                           hint: _dropDownValue == null
                               ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('Select a FeedBack'),
-                              )
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('Select a FeedBack'),
+                                )
                               : Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -247,7 +247,7 @@ class _IReporterScreenState extends State<IReporterScreen> {
                 SizedBox(
                   height: 10,
                 ),
-      
+
                 Row(
                   children: [
                     Text(
@@ -285,11 +285,11 @@ class _IReporterScreenState extends State<IReporterScreen> {
                     ),
                   ),
                 ),
-      
+
                 SizedBox(
                   height: 10,
                 ),
-      
+
                 // Row(
                 //   children: [
                 //     Text("Message",
@@ -319,7 +319,7 @@ class _IReporterScreenState extends State<IReporterScreen> {
                 //       alignment: Alignment.centerLeft,
                 //       padding: EdgeInsets.symmetric(horizontal: 20),
                 //       child:  TextFormField(
-      
+
                 //       ///maxLines: 1,
                 //         keyboardType: TextInputType.text,
                 //        controller: contentController,
@@ -330,7 +330,7 @@ class _IReporterScreenState extends State<IReporterScreen> {
                 //       ),
                 //     ),
                 //   ),
-      
+
                 SizedBox(
                   height: 18,
                 ),
@@ -350,8 +350,8 @@ class _IReporterScreenState extends State<IReporterScreen> {
                           border: Border.all(
                               color: R.colors
                                   .splashScreenViewPagerSelectedIndicatorColor),
-                          color: R
-                              .colors.splashScreenViewPagerSelectedIndicatorColor,
+                          color: R.colors
+                              .splashScreenViewPagerSelectedIndicatorColor,
                           borderRadius: BorderRadius.circular(12)),
                       child: Center(
                         child: Text(

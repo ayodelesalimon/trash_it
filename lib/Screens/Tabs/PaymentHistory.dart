@@ -23,7 +23,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
 
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
@@ -84,44 +84,54 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
         title: const Text('Payment History'),
         automaticallyImplyLeading: false,
       ),
-      body: isLoading 
-      ? Center(
-                child: CupertinoActivityIndicator(
-                radius: 20,
-              ))
-            : message!.isEmpty
-                ? Center(child: Text(noBills!))
-                : ListView.builder(
-                    itemCount: message!.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistoryDetails(message: message![index],)));
-                            },
-                            title: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(message![index]['payment_id'].toString(),   style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            subtitle: Text(message![index]['payment_date']),
-                            trailing: Text(message![index]['currency']+message![index]['amount'].toString(),   style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-
+      body: isLoading
+          ? Center(
+              child: CupertinoActivityIndicator(
+              radius: 20,
+            ))
+          : message!.isEmpty
+              ? Center(child: Text(noBills!))
+              : ListView.builder(
+                  itemCount: message!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PaymentHistoryDetails(
+                                          message: message![index],
+                                        )));
+                          },
+                          title: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    message![index]['payment_id'].toString(),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          subtitle: Text(message![index]['payment_date']),
+                          trailing: Text(
+                            message![index]['currency'] +
+                                message![index]['amount'].toString(),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

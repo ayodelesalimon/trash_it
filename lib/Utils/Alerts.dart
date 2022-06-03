@@ -56,7 +56,7 @@ class Alerts {
     );
   }
 
-  static Future<void> showMember(context, title, message) async {
+  static Future<void> signOut(context, title, message, Function onTap) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -68,9 +68,15 @@ class Alerts {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Ok"),
+              child: Text("Cancel"),
               onPressed: () {
-                // Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Logout"),
+              onPressed: () {
+                onTap();
               },
             ),
           ],

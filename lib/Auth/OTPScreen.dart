@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Resources/Colors.dart';
 import 'package:trash_it/Resources/Resources.dart';
 import 'package:trash_it/Utils/Alerts.dart';
@@ -41,6 +42,11 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
       sendOTPSever(_email, _otp);
     }
   }
+    Future setToLocalStorage({String? name, dynamic data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(name!, data);
+  }
+
 
   Future<void> sendOTPSever(
     String email,
@@ -55,6 +61,9 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
 
         print(data["message"]);
         if (data['status'] == "success") {
+        //         await setToLocalStorage(name: 'token', data: token);
+        // await setToLocalStorage(name: 'email', data: email);
+
           Alerts.continueReg(context, "Success", "Success", () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (_) => LoginScreenPage()));
@@ -146,13 +155,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 0),
-              // Container(
-              //   height: MediaQuery.of(context).size.height / 3,
-              //   child: ClipRRect(
-              //     borderRadius: BorderRadius.circular(30),
-              //     child: Image.asset("assets/images/fold_down_icon.png"),
-              //   ),
-              // ),
+             
               SizedBox(height: 38),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -235,9 +238,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       onCompleted: (v) {
                         print("Completed");
                       },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
+                     
                       onChanged: (value) {
                         print(value);
                         setState(() {
@@ -245,23 +246,12 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         });
                       },
                       beforeTextPaste: (text) {
-                        print("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                       
                         return true;
                       },
                     )),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              //   child: Text(
-              //     hasError ? "*Please fill up all the cells properly" : "",
-              //     style: TextStyle(
-              //         color: Colors.red,
-              //         fontSize: 12,
-              //         fontWeight: FontWeight.w400),
-              //   ),
-              // ),
+             
               SizedBox(
                 height: 0,
               ),
@@ -278,19 +268,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                         setState(() {
                           resendOTPSever(widget.email!);
                         });
-                        // try {
-                        //   await Auth.requestOTP(requestOTPModel);
-                        //   setState(() {
-                        //     _isLoading = false;
-                        //     secondsToRun = 120;
-                        //   });
-                        //   startTimer();
-                        // } catch (e) {
-                        //   setState(() {
-                        //     errMsg = '$e';
-                        //     _isLoading = false;
-                        //   });
-                        // }
+                       
                       }
                     },
                     child: Text(
@@ -299,15 +277,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                           color: secondsToRun == 0 ? Colors.green : lightGrey),
                     ),
                   ),
-                  // TextButton(
-                  //     onPressed: () => snackBar("OTP resend!!"),
-                  //     child: Text(
-                  //       "RESEND",
-                  //       style: TextStyle(
-                  //           color: Color(0xFF91D3B3),
-                  //           fontWeight: FontWeight.bold,
-                  //           fontSize: 16),
-                  //     ))
+                 
                 ],
               ),
               SizedBox(
@@ -350,16 +320,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                 decoration: BoxDecoration(
                     color: R.colors.splashScreenViewPagerSelectedIndicatorColor,
                     borderRadius: BorderRadius.circular(5),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //       color: Colors.green.shade200,
-                    //       offset: Offset(1, -2),
-                    //       blurRadius: 5),
-                    //   BoxShadow(
-                    //       color: Colors.green.shade200,
-                    //       offset: Offset(-1, 2),
-                    //       blurRadius: 5)
-                    // ]
+                   
                     ),
               ),
             ],
