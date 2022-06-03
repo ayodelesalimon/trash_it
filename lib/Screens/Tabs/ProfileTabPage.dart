@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_session/flutter_session.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Auth/Login.dart';
 import 'package:trash_it/Constants/LayoutController.dart';
@@ -38,13 +38,13 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
   UserProfileModel userProfileModel = UserProfileModel();
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
  Future setToLocalStorage({String? name, dynamic data}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(name, data);
+    prefs.setString(name!, data);
   }
   Future logOut() async {
     try {

@@ -63,15 +63,15 @@ class _PaymentHistoryDetailsState extends State<PaymentHistoryDetails> {
                 ],
               ),
                SizedBox(height: 8),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('transaction_reference'),
-                   Text(widget.message!['transaction_reference'].toString(),   style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),),
+              //  Row(
+              //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text('transaction_reference'),
+              //      Text(widget.message!['transaction_reference'].toString(),   style: TextStyle(
+              //                       fontSize: 18, fontWeight: FontWeight.w500),),
                 
-                ],
-              ),
+              //   ],
+              // ),
           ],
         
         ),

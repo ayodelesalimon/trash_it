@@ -38,11 +38,10 @@ dependencies:
   email_validator:
   modal_bottom_sheet:
   connectivity: ^3.0.6
-  shared_preferences:
-  flutter_session:
+  shared_preferences: ^2.0.15
   dio:
   intl:
-  url_launcher:
+  url_launcher: ^6.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

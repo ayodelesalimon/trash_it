@@ -55,7 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }

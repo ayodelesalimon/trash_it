@@ -40,6 +40,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
   List? propertyList = [];
   List? wardList = [];
   List? lgaList = [];
+  String phone = '';
   bool showObscureText = true;
   bool showObscureText1 = true;
   TextEditingController fisrtNameController = TextEditingController();
@@ -139,6 +140,30 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
     }
   }
 
+  Future getInfo() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          ApiUrl.GET_INFO,
+        ),
+      );
+      // UserProfileModel profileModel = UserProfileModel.fromJson(response);
+      print(response.body);
+      if (response.statusCode == 200) {
+        dynamic resData = jsonDecode(response.body);
+        setState(() {
+          phone = resData["message"]["official_phone"];
+          // email = resData["message"]["official_email"];
+          // fb = resData["message"]["facebook"];
+          // insta = resData["message"]["instagram"];
+        });
+      } else {}
+    } catch (e) {
+      // print(e);
+
+    }
+  }
+
   registerUser() {
     String _customerId = customerIdController.text.trim();
     String _lastName = lastNameController.text.trim();
@@ -223,6 +248,7 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
   @override
   void initState() {
     super.initState();
+    getInfo();
     // getOperatorList();
     // getLgaList();
     // getWardList();
@@ -420,8 +446,25 @@ class _RegisterScreenPageState extends State<RegisterScreenPage> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            Alerts.show(context, "Contact Us",
-                                                "0808-TRASH-IT");
+                                            // showModalBottomSheet(
+                                            //   context: context,
+                                            //   builder: (context) {
+                                            //     return Container(
+                                            //       height: 200,
+                                            //       child: Wrap(
+                                            //         children: [
+                                            //           ListTile(
+                                            //             leading:
+                                            //                 Icon(Icons.phone),
+                                            //             title: Text(phone),
+                                            //           ),
+                                            //         ],
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            // );
+                                            Alerts.show(
+                                                context, "Contact Us", phone);
                                           },
                                           child: Text(
                                             " Click Here",

@@ -32,7 +32,7 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
   String tollFree = "";
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
@@ -340,9 +340,9 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-             ListTile(
+            ListTile(
               onTap: () async {
-                   Navigator.pop(context);
+                Navigator.pop(context);
                 Alerts.show(context, "", tollFree);
               },
               leading: Image.asset(

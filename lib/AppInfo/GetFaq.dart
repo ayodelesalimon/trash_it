@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trash_it/Models/FaqModel.dart';
+
 import 'package:trash_it/Utils/ApiUrl.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +20,7 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
   List? message = [];
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
    // print(data);
     return data;
   }
