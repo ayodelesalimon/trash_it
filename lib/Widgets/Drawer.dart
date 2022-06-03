@@ -72,11 +72,6 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
           ),
           (Route<dynamic> route) => false,
         );
-        // dynamic resData = jsonDecode(response.body);
-        // setState(() {
-        //   fb = resData["message"]["facebook"];
-        //   insta = resData["message"]["instagram"];
-        // });
       } else {
         Navigator.pushAndRemoveUntil(
           context,
@@ -400,7 +395,11 @@ class _NaviationDrawerState extends State<NaviationDrawer> {
             Center(
               child: ListTile(
                 onTap: () async {
-                  await logOut();
+                  Alerts.signOut(
+                      context, "Logout", "Do you want to Logout of the App",
+                      () async {
+                    await logOut();
+                  });
                 },
                 leading: Image.asset(
                   "assets/icons/logout.png",

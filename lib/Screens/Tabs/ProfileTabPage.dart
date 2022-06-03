@@ -11,6 +11,7 @@ import 'package:trash_it/Constants/LayoutController.dart';
 import 'package:trash_it/Constants/TextStyle.dart';
 import 'package:trash_it/Models/UserProfileModel.dart';
 import 'package:trash_it/Resources/Resources.dart';
+import 'package:trash_it/Utils/Alerts.dart';
 import 'package:trash_it/Utils/ApiUrl.dart';
 import 'package:trash_it/Widgets/CustomRaisedButton.dart';
 import 'package:http/http.dart' as http;
@@ -42,23 +43,24 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
     print(data);
     return data;
   }
- Future setToLocalStorage({String? name, dynamic data}) async {
+
+  Future setToLocalStorage({String? name, dynamic data}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(name!, data);
   }
+
   Future logOut() async {
     try {
       final response = await http.get(
-        Uri.parse(
-          ApiUrl.SIGN_OUT,
-          
-        ),
-         headers: {
+          Uri.parse(
+            ApiUrl.SIGN_OUT,
+          ),
+          headers: {
             'Content-Type': 'application/json',
             'Authorization':
                 'Bearer ${await getFromLocalStorage(name: 'token')} ',
           });
-      
+
       // UserProfileModel profileModel = UserProfileModel.fromJson(response);
       print(response.body);
       if (response.statusCode == 200) {
@@ -69,11 +71,6 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
           ),
           (Route<dynamic> route) => false,
         );
-        // dynamic resData = jsonDecode(response.body);
-        // setState(() {
-        //   fb = resData["message"]["facebook"];
-        //   insta = resData["message"]["instagram"];
-        // });
       } else {
         Navigator.pushAndRemoveUntil(
           context,
@@ -105,27 +102,37 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                 'Bearer ${await getFromLocalStorage(name: 'token')} ',
           });
       // UserProfileModel profileModel = UserProfileModel.fromJson(response);
-      print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         dynamic resData = jsonDecode(response.body);
-
-        setState(() {
-          setToLocalStorage(
-              name: 'firstName', data: resData["message"]["first_name"]);
-          isLoading = false;
-          customerIdController.text = resData["message"]["customer_id"];
-          fisrtNameController.text = resData["message"]["first_name"];
-          lastNameController.text = resData["message"]["last_name"];
-          emailController.text = resData["message"]["email"];
-          phoneController.text = resData["message"]["phone"];
-        });
-        print(resData);
-      } else {
-        setState(() {
-          isLoading = false;
-          isError = true;
-        });
+        if (resData == null) {
+          print("object is null${resData}");
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => LoginScreenPage(),
+            ),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          setState(() {
+            setToLocalStorage(
+                name: 'firstName', data: resData["message"]["first_name"]);
+            isLoading = false;
+            customerIdController.text = resData["message"]["customer_id"];
+            fisrtNameController.text = resData["message"]["first_name"];
+            lastNameController.text = resData["message"]["last_name"];
+            emailController.text = resData["message"]["email"];
+            phoneController.text = resData["message"]["phone"];
+          });
+          print(resData);
+        }
+        // ignore: unnecessary_null_comparison
       }
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
     } catch (e) {
       // print(e);
       setState(() {
@@ -142,7 +149,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
     //  getToken();
 
     getUserProfile().whenComplete(() => null);
-   // logOut().whenComplete(() => null);
+    // logOut().whenComplete(() => null);
   }
 
   @override
@@ -305,7 +312,13 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                               padding: const EdgeInsets.all(18.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                 await logOut();
+                                  Alerts.signOut(context, "Logout",
+                                      "Do you want to Logout of the App",
+                                      () async {
+                                    await logOut();
+                                  });
+                                  // showCupertinoDialog(context: context, bu())
+                                  //  await logOut();
                                 },
                                 child: Center(
                                     child: Text(

@@ -81,7 +81,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         dynamic resData = jsonDecode(response.body);
         setState(() {
           isLoading = false;
-       //   paid_status = resData["message"]["paid_status"];
+          //   paid_status = resData["message"]["paid_status"];
           message = resData["message"];
           noBiils = resData["bill_message"];
 
@@ -125,7 +125,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           title: Text("Payment"),
           automaticallyImplyLeading: false,
         ),
-        body: isLoading 
+        body: isLoading
             ? Center(
                 child: CupertinoActivityIndicator(
                 radius: 20,
