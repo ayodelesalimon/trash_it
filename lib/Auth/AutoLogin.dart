@@ -20,6 +20,7 @@ class AutoLoginScreen extends StatefulWidget {
 }
 
 class _AutoLoginScreenState extends State<AutoLoginScreen> {
+  String firstName = "";
   TextEditingController emailController = TextEditingController();
   // SharedPreferences prefs = SharedPreferences.getInstance();
   TextEditingController passwordController = TextEditingController();
@@ -77,8 +78,8 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
         Alerts.show(context, "Success", loginResponse.message!.message);
         String? token = loginResponse.message!.accessToken;
         await setToLocalStorage(name: 'token', data: token);
-        await setToLocalStorage(name: 'email', data: getFromLocalStorage(name: 'email'));
-       // await FlutterSession().set("token", token);
+        // await setToLocalStorage(name: 'email', data: getFromLocalStorage(name: 'email'));
+        // await FlutterSession().set("token", token);
         //   await setToLocalStorage(name: 'token', data: token);
 
         print(token);
@@ -100,6 +101,17 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
       // I get no exception here
       print(exception);
     }
+  }
+
+  getFirstName() async {
+    firstName = await getFromLocalStorage(name: 'firstName');
+    print(firstName);
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getFirstName();
   }
 
   bool _showPassword = false;
@@ -131,7 +143,7 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 30.0, 0, 0),
                     child: Text(
-                      "Welcome back! ${getFromLocalStorage(name: 'firstName')}",
+                      "Welcome back! $firstName",
                       style: TextStyle(
                           color: Colors.black,
                           fontFamily: R.strings.fontName,

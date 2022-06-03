@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       fontFamily: "Lato",
         primarySwatch: Colors.teal,
       ),
-       home: isviewed != 0 ? LandingPageScreen() : HomePage(),
+       home: isviewed != 0 ? LandingPageScreen() : AutoLoginScreen(),
     );
   }
 }

@@ -1,12 +1,17 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_updater/native_updater.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Resources/Resources.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:trash_it/Widgets/Drawer.dart';
+
+import '../../Utils/ApiUrl.dart';
+import 'package:http/http.dart' as http;
 
 class HomeTabScreen extends StatefulWidget {
   const HomeTabScreen({Key? key}) : super(key: key);
@@ -17,6 +22,8 @@ class HomeTabScreen extends StatefulWidget {
 
 class _HomeTabScreenState extends State<HomeTabScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String lastName = "";
+  String email = "";
   final List carouselimages = [
     "assets/images/1.jpeg",
     "assets/images/2.jpeg",
@@ -68,6 +75,51 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         )) ??
         false;
   }
+
+  Future getFromLocalStorage({String? name}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString(name!);
+    print(data);
+    return data;
+  }
+
+  Future setToLocalStorage({String? name, dynamic data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(name!, data);
+  }
+
+  Future getUserProfile() async {
+    setState(() {});
+    print(await getFromLocalStorage(name: 'email'));
+    try {
+      final response = await http.get(
+          Uri.parse(
+            ApiUrl.PROFILE + '${await getFromLocalStorage(name: 'email')} ',
+          ),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'Bearer ${await getFromLocalStorage(name: 'token')} ',
+          });
+      // UserProfileModel profileModel = UserProfileModel.fromJson(response);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        dynamic resData = jsonDecode(response.body);
+
+        setState(() {
+          setToLocalStorage(
+              name: 'firstName', data: resData["message"]["first_name"]);
+          setToLocalStorage(name: 'email', data: resData["message"]["email"]);
+        });
+        print(resData);
+      }
+      // ignore: unnecessary_null_comparison
+
+    } catch (e) {
+      // print(e);
+      setState(() {});
+    }
+  }
 //  Future<void> checkVersion() async {
 //     /// For example: You got status code of 412 from the
 //     /// response of HTTP request.
@@ -109,6 +161,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserProfile();
     NativeUpdater.displayUpdateAlert(
       context,
       forceUpdate: true,
@@ -123,7 +176,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         child: Scaffold(
             endDrawerEnableOpenDragGesture: false,
             key: _scaffoldKey,
-           
             drawer: NaviationDrawer(),
             body:
 
@@ -137,7 +189,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                 image: AssetImage("assets/images/homebg.PNG"),
                 fit: BoxFit.cover,
               )),
-
               child: SingleChildScrollView(
                 child: Column(children: [
                   Row(
@@ -175,7 +226,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                   ),
                 ]),
               ),
-            
             )),
       ),
     );
