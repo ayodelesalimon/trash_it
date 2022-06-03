@@ -1,4 +1,4 @@
-package com.example.trash_it
+package ng.trashit.app
 
 import io.flutter.embedding.android.FlutterActivity
 

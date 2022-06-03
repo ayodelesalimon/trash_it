@@ -29,7 +29,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
   int? total;
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     print(data);
     return data;
   }
@@ -41,7 +41,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     // } else {
     //   throw 'Could not launch $url';
     // }
-     if (!await launch(
+    if (!await launch(
       url!,
       forceSafariVC: false,
       forceWebView: false,
@@ -166,14 +166,12 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             ),
                             Text(serviceCharge!.toString()),
                           ]),
-                          SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Divider(
                         height: 1,
                         thickness: 2,
                       ),
                       SizedBox(height: 12),
-                      
-                      
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -182,8 +180,11 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),
-                            Text("NGN ${total!.toString()}",  style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w700),),
+                            Text(
+                              "NGN ${total!.toString()}",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w700),
+                            ),
                           ]),
                     ],
                   ),

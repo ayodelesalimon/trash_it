@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session/flutter_session.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Auth/Register.dart';
 import 'package:trash_it/Constants/TextStyle.dart';
@@ -28,13 +28,13 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
   bool showObscureText = true;
   Future setToLocalStorage({String? name, dynamic data}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(name, data);
+    prefs.setString(name!, data);
   }
 
 // getFromLocalStorage() method will get data from the local storage
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString(name);
+    String? data = prefs.getString(name!);
     return data;
   }
 
@@ -79,9 +79,9 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
         Alerts.show(context, "Success", loginResponse.message!.message);
         String? token = loginResponse.message!.accessToken;
         await setToLocalStorage(name: 'token', data: token);
-        await setToLocalStorage(name: 'email', data: getFromLocalStorage(name: 'email'));
-        await FlutterSession().set("token", token);
-        //   await setToLocalStorage(name: 'token', data: token);
+        await setToLocalStorage(
+            name: 'email', data: getFromLocalStorage(name: 'email'));
+      
 
         print(token);
         Navigator.push(

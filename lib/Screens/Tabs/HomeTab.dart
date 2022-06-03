@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:native_updater/native_updater.dart';
 import 'package:trash_it/Resources/Resources.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -67,6 +68,52 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         )) ??
         false;
   }
+//  Future<void> checkVersion() async {
+//     /// For example: You got status code of 412 from the
+//     /// response of HTTP request.
+//     /// Let's say the statusCode 412 requires you to force update
+//     int statusCode = 412;
+
+//     /// This could be kept in our local
+//     int localVersion = 9;
+
+//     /// This could get from the API
+//     int serverLatestVersion = 10;
+
+//     Future.delayed(Duration.zero, () {
+//       if (statusCode == 412) {
+//         NativeUpdater.displayUpdateAlert(
+//           context,
+//           forceUpdate: true,
+//           appStoreUrl: '<Your App Store URL>',
+//           playStoreUrl: '<Your Play Store URL>',
+//           iOSDescription: '<Your iOS description>',
+//           iOSUpdateButtonLabel: 'Upgrade',
+//           iOSCloseButtonLabel: 'Exit',
+//         );
+//       } else if (serverLatestVersion > localVersion) {
+//         NativeUpdater.displayUpdateAlert(
+//           context,
+//           forceUpdate: false,
+//           appStoreUrl: '<Your App Store URL>',
+//           playStoreUrl: '<Your Play Store URL>',
+//           iOSDescription: '<Your description>',
+//           iOSUpdateButtonLabel: 'Upgrade',
+//           iOSIgnoreButtonLabel: 'Next Time',
+//         );
+//       }
+//     });
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    NativeUpdater.displayUpdateAlert(
+      context,
+      forceUpdate: true,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,18 +123,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
         child: Scaffold(
             endDrawerEnableOpenDragGesture: false,
             key: _scaffoldKey,
-            //appBar: AppBar(
-            // leading: IconButton(
-            //   onPressed: () {
-            //     _scaffoldKey.currentState!.openDrawer();
-            //   },
-            //   // alignment: Alignment.topCenter,
-            //   icon: Icon(Icons.menu),
-            // ),
-            // backgroundColor: R.colors.splashScreenViewPagerSelectedIndicatorColor,
-            // title: Text("HOME"),
-            // automaticallyImplyLeading: false,
-            //  ),
+           
             drawer: NaviationDrawer(),
             body:
 
@@ -139,47 +175,7 @@ class _HomeTabScreenState extends State<HomeTabScreen> {
                   ),
                 ]),
               ),
-              //   child: Image.asset("assets/images/trash.jpg", fit: BoxFit.cover,)
-
-              // CarouselSlider.builder(
-              //   key: _sliderKey,
-              //   itemCount: carouselimages.length,
-              //   options: CarouselOptions(
-              //     height: MediaQuery.of(context).size.height,
-              //     autoPlay: true,
-              //     enlargeCenterPage: true,
-              //     viewportFraction: 0.9,
-              //     aspectRatio: 1.0,
-              //     initialPage: 0,
-              //   ),
-              //   itemBuilder: (BuildContext context, int index, int realIndex) {
-              //     return Container(
-              //       height: MediaQuery.of(context).size.height,
-              //       alignment: Alignment.center,
-              //       decoration: BoxDecoration(
-              //         image: DecorationImage(
-
-              //           image: AssetImage(carouselimages[index]),
-              //           fit: BoxFit.fitWidth,
-              //         ),
-              //       ),
-              //       //color: colors[index],
-              //       // child: Image.asset(
-              //       //   carouselimages[index], fit: BoxFit.contain,
-              //       //),
-              //     );
-              //   },
-              // ),
-              // ),
-
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Image.asset("assets/images/trashbg.png", width: 300, height: 250,),
-              //   ],
-              // )
-              //   ],
-              // ),
+            
             )),
       ),
     );
