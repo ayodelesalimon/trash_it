@@ -81,6 +81,8 @@ class _LoginScreenPageState extends State<LoginScreenPage> {
         await setToLocalStorage(name: 'token', data: token);
         await setToLocalStorage(name: 'email', data: email);
         await setToLocalStorage(name: 'password', data: password);
+       // await FlutterSession().set("token", token);
+        //   await setToLocalStorage(name: 'token', data: token);
 
         print(token);
         Navigator.push(

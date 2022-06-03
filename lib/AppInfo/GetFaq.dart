@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trash_it/Models/FaqModel.dart';
+
 import 'package:trash_it/Utils/ApiUrl.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +21,7 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
   Future getFromLocalStorage({String? name}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? data = prefs.getString(name!);
-    // print(data);
+   // print(data);
     return data;
   }
 
@@ -31,18 +31,20 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
     });
     try {
       final response = await http.get(
-        Uri.parse(
-          ApiUrl.FAQ,
-        ),
-      );
+          Uri.parse(
+            ApiUrl.FAQ,
+          ),
+        );
       // UserProfileModel profileModel = UserProfileModel.fromJson(response);
       print(response.body);
       if (response.statusCode == 200) {
-        dynamic resData = jsonDecode(response.body);
+        dynamic  resData = jsonDecode(response.body);
         setState(() {
           isLoading = false;
           message = resData["message"];
+          
         });
+      
       } else {
         setState(() {
           isLoading = false;
@@ -57,8 +59,8 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
       });
     }
   }
-
-  @override
+  
+ @override
   void initState() {
     super.initState();
     //  getToken();
@@ -72,29 +74,30 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
         title: Text("Faq"),
         //automaticallyImplyLeading: false,
       ),
-      body: isLoading
-          ? Center(
-              child: CupertinoActivityIndicator(
-              radius: 20,
-            ))
-          : Padding(
-              padding: EdgeInsets.all(12),
-              child: ListView.builder(
-                // scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                //   physics: BouncingScrollPhysics(),
-                itemCount: message!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _buildFaqCard(message![index]);
-
-                  //Text(message![index]["title"]!, style: TextStyle(fontSize: 20),);
-                },
-              ),
-            ),
+      body: 
+       isLoading
+            ? Center(
+                child: CupertinoActivityIndicator(
+                radius: 20,
+              )) :
+      Padding(
+        padding: EdgeInsets.all(12),
+        child: ListView.builder(
+        // scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+       //   physics: BouncingScrollPhysics(),
+        itemCount: message!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _buildFaqCard(message![index]);
+          
+          //Text(message![index]["title"]!, style: TextStyle(fontSize: 20),);
+        },
+      ),
+        
+      ),
     );
   }
-
-  Widget _buildFaqCard(Map<String, dynamic> message) {
+  Widget _buildFaqCard( Map<String, dynamic> message) {
     return Card(
       child: ExpansionTile(
         title: Text(
@@ -115,4 +118,5 @@ class _GetFaqScreenState extends State<GetFaqScreen> {
       ),
     );
   }
+
 }

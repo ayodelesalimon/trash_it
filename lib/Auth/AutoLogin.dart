@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trash_it/Auth/Register.dart';
 import 'package:trash_it/Constants/TextStyle.dart';
@@ -79,9 +77,9 @@ class _AutoLoginScreenState extends State<AutoLoginScreen> {
         Alerts.show(context, "Success", loginResponse.message!.message);
         String? token = loginResponse.message!.accessToken;
         await setToLocalStorage(name: 'token', data: token);
-        await setToLocalStorage(
-            name: 'email', data: getFromLocalStorage(name: 'email'));
-      
+        await setToLocalStorage(name: 'email', data: getFromLocalStorage(name: 'email'));
+       // await FlutterSession().set("token", token);
+        //   await setToLocalStorage(name: 'token', data: token);
 
         print(token);
         Navigator.push(
